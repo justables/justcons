@@ -1,7 +1,7 @@
 package de.ilijaz.myapp.myapp.iconconfiguration.icon.pipe
 
-import org.w3c.dom.Document
+import de.ilijaz.myapp.myapp.core.SvgRoot
 
 abstract class AbstractIconPipe {
-    abstract fun apply(document: Document, args: Any): Document
+    abstract fun apply(root: SvgRoot, args: Any): SvgRoot
 }
