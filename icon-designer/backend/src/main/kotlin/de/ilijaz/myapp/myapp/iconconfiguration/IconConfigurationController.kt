@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 class IconConfigurationController(
     val iconConfigurationService: IconConfigurationService,
 ) {
-    @GetMapping("/icon")
+    @PostMapping("/icon")
     fun getAll(@RequestBody configuration: IconConfigurationDTO): String =
         iconConfigurationService.configure(configuration)
 
