@@ -1,6 +1,6 @@
 package de.ilijaz.myapp.myapp.icon
 
-import de.ilijaz.myapp.myapp.icon.svg.Svg
+import de.ilijaz.myapp.myapp.icon.svg.SvgBuilder
 import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphic
 
 data class Icon(
@@ -16,5 +16,5 @@ data class Icon(
     val upperLeftCornerIcon: VectorGraphic?,
     val upperLeftCornerIconBackground: VectorGraphic?,
 ) {
-    fun render(): String = Svg(this, 24).render()
+    fun render(): String = SvgBuilder(this, 24).render()
 }

@@ -6,10 +6,21 @@ import org.springframework.stereotype.Component
 @Component
 class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
     override fun toDTO(entity: VectorGraphic): VectorGraphicDTO = VectorGraphicDTO(
-        entity.id, entity.name, entity.vectorGraphic, entity.type,
+        id = entity.id,
+        name = entity.name,
+        paths = entity.paths,
+        type = entity.type,
+        xTranslation = entity.xTranslation,
+        yTranslation = entity.yTranslation,
+        scale = entity.scale,
+        rotation = entity.rotation,
     )
 
     override fun fromDTO(dto: VectorGraphicDTO): VectorGraphic = VectorGraphic(
-        dto.id, dto.name, dto.vectorGraphic, dto.type,
+        id = dto.id,
+        name = dto.name,
+        paths = dto.paths,
+        type = dto.type,
+        transformation = VectorGraphic.createTransformation(dto.xTranslation, dto.yTranslation, dto.scale, dto.rotation)
     )
 }
