@@ -1,6 +1,7 @@
-import 'zone.js';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { provideFileRouter } from '@analogjs/router';
-import { AppComponent } from './app/app.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-bootstrapApplication(AppComponent, { providers: [provideFileRouter()] });
+import { AppModule } from './app/app.module';
+
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));

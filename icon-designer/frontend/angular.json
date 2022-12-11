@@ -3,53 +3,102 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "my-app": {
+    "icon-designer": {
       "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@nrwl/vite:build",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "configFile": "vite.config.ts",
-            "outputPath": "dist/client"
+            "outputPath": "dist/icon-designer",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
           },
-          "defaultConfiguration": "production",
           "configurations": {
-            "development": {},
             "production": {
-              "sourcemap": true
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@nrwl/vite:dev-server",
-          "defaultConfiguration": "development",
-          "options": {
-            "buildTarget": "my-app:build",
-            "port": 5173
-          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "development": {
-              "buildTarget": "my-app:build:development",
-              "hmr": true
-            },
             "production": {
-              "buildTarget": "my-app:build:production"
+              "browserTarget": "icon-designer:build:production"
+            },
+            "development": {
+              "browserTarget": "icon-designer:build:development"
             }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "icon-designer:build"
           }
         },
         "test": {
-          "builder": "@nrwl/vite:test",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "config": "vite.config.ts"
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": []
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
