@@ -1,4 +1,4 @@
-package de.ilijaz.myapp.myapp.icon.vectorgraphic
+package de.ilijaz.myapp.myapp.vectorgraphic
 
 import java.util.*
 

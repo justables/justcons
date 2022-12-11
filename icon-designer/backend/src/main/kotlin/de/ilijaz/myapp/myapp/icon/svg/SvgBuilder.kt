@@ -1,8 +1,8 @@
 package de.ilijaz.myapp.myapp.icon.svg
 
 import de.ilijaz.myapp.myapp.icon.Icon
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphic
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphicType
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicType
 import java.util.*
 
 data class SvgBuilder(

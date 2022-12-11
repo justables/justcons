@@ -1,4 +1,4 @@
-package de.ilijaz.myapp.myapp.icon.vectorgraphic
+package de.ilijaz.myapp.myapp.vectorgraphic
 
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping

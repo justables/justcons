@@ -1,7 +1,7 @@
 package de.ilijaz.myapp.myapp.icon
 
 import de.ilijaz.myapp.core.util.Preconditions
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphicService
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicService
 import org.springframework.stereotype.Component
 
 @Component

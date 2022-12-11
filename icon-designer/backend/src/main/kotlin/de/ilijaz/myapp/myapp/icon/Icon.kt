@@ -1,7 +1,7 @@
 package de.ilijaz.myapp.myapp.icon
 
 import de.ilijaz.myapp.myapp.icon.svg.SvgBuilder
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphic
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
 
 data class Icon(
     val baseIcon: VectorGraphic,

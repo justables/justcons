@@ -1,7 +1,7 @@
 package de.ilijaz.skaagen
 
 import de.ilijaz.myapp.myapp.cat.CatController
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphicController
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicController
 import de.ilijaz.skaagen.service.ServiceGenerator
 import de.ilijaz.skaagen.service.dtos.dtoCollection
 import de.ilijaz.skaagen.service.dtos.generateDTOs

@@ -1,6 +1,6 @@
 package de.ilijaz.myapp.myapp.icon
 
-import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphicSelectorDTO
+import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicSelectorDTO
 
 data class IconDTO(
     val baseIcon: VectorGraphicSelectorDTO,
