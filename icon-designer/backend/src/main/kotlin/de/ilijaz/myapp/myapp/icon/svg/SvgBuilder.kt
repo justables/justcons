@@ -9,6 +9,10 @@ data class SvgBuilder(
     val icon: Icon,
     val dimensions: Int,
 ) {
+    companion object {
+        fun indentBy(input: String, increments: Int) = input.lines().joinToString("\n") { "  ".repeat(increments) + it }
+    }
+
     private val mainIconMaskId = UUID.randomUUID().toString()
 
     fun render(): String {
@@ -16,14 +20,14 @@ data class SvgBuilder(
         result.add("<svg width=\"$dimensions\" height=\"$dimensions\" viewBox=\"0 0 $dimensions $dimensions\">")
         result.add("  <defs>")
         if (isMainIconMask()) {
-            result.add(incrementBy(getBaseIconMask(), 2))
+            result.add(indentBy(getBaseIconMask(), 2))
         }
         result.add("  </defs>")
         if (!isMainIconMask()) {
-            result.add(incrementBy(getBaseIcon(), 1))
+            result.add(indentBy(getBaseIcon(), 1))
         }
         if (icon.backgroundIcon != null) {
-            result.add(incrementBy(getBackgroundIcon(), 1))
+            result.add(indentBy(getBackgroundIcon(), 1))
         }
         result.add("</svg>")
         return result.joinToString("\n")
@@ -35,7 +39,7 @@ data class SvgBuilder(
         val result = ArrayList<String>()
         result.add("<mask id=\"$mainIconMaskId\">")
         result.add("  <rect width=\"100%\" height=\"100%\" fill=\"white\" />")
-        result.add(incrementBy(getBaseIcon(), 1))
+        result.add(indentBy(getBaseIcon(), 1))
         result.add("</mask>")
         return result.joinToString("\n")
     }
@@ -44,9 +48,9 @@ data class SvgBuilder(
         val result = ArrayList<String>()
         val transform = createTransform(icon.backgroundIcon)
         result.add("<g transform-origin=\"center\" $transform>")
-        result.add(incrementBy(icon.baseIcon.computeSvgPaths(), 1))
+        result.add(indentBy(icon.baseIcon.computeSvgPaths(), 1))
         if (icon.additionalIcon != null) {
-            result.add(incrementBy(icon.additionalIcon.computeSvgPaths(), 1))
+            result.add(indentBy(icon.additionalIcon.computeSvgPaths(), 1))
         }
         result.add("</g>")
         return result.joinToString("\n")
@@ -59,11 +63,8 @@ data class SvgBuilder(
         val result = ArrayList<String>()
         val mask = if (isMainIconMask()) " mask=\"url(#$mainIconMaskId)\"" else ""
         result.add("<g$mask>")
-        result.add(incrementBy(icon.backgroundIcon!!.computeSvgPaths(), 1))
+        result.add(indentBy(icon.backgroundIcon!!.computeSvgPaths(), 1))
         result.add("</g>")
         return result.joinToString("\n")
     }
-
-    private fun incrementBy(input: String, increments: Int) =
-        input.lines().joinToString("\n") { "  ".repeat(increments) + it }
 }

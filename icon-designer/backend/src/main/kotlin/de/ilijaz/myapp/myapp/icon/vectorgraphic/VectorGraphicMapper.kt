@@ -14,7 +14,6 @@ class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
         yTranslation = entity.yTranslation,
         scale = entity.scale,
         rotation = entity.rotation,
-        svg = entity.computeSvgPaths(),
     )
 
     override fun fromDTO(dto: VectorGraphicDTO): VectorGraphic = VectorGraphic(
