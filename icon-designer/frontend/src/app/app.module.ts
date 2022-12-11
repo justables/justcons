@@ -6,10 +6,11 @@ import { NgxsModule } from '@ngxs/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VectorGraphicsState } from './vectorgraphic/vector-graphic.state';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, NgxsModule.forRoot([VectorGraphicsState])],
+  imports: [BrowserModule, HttpClientModule, AppRoutingModule, LayoutModule, NgxsModule.forRoot([VectorGraphicsState])],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -1,0 +1,15 @@
+<p>vector-graphics works!</p>
+<div class="flex gap-2">
+  <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
+    <ng-container *ngFor="let vectorGraphic of vectorGraphics">
+      <div class="shadow-md p-2 bg-gray-100">
+        <span>{{ vectorGraphic.name }}</span>
+        <img
+          style="display: block; width: 100px; height: 100px"
+          id="base64image"
+          [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
+        />
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
