@@ -3,6 +3,7 @@ package de.ilijaz.skaagen.service.dtos
 import de.ilijaz.skaagen.*
 import java.io.File
 import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 
 class DTOGenerator(private val dtoClass: KClass<out Any>) {
@@ -11,9 +12,12 @@ class DTOGenerator(private val dtoClass: KClass<out Any>) {
     private val dependencyCollection = DependencyCollection(path)
 
     fun writeFile() {
-        val fileName = toKebabCase(dtoClass.simpleName!!).replace("-dto", ".dto.ts")
+        val fileName = toKebabCase(dtoClass.simpleName!!) + ".ts"
         val path =
-            listOf(targetPath, dtoClass.java.`package`.name.replace("$rootPackage.", "")).joinToString("/")
+            listOf(
+                targetPath,
+                dtoClass.java.`package`.name.replace("$rootPackage.", "").replace(".", "/")
+            ).joinToString("/")
         val fullPath = listOf(path, fileName).joinToString("/")
         val code = toCode()
         File(path).mkdirs()
@@ -23,6 +27,9 @@ class DTOGenerator(private val dtoClass: KClass<out Any>) {
     }
 
     private fun toCode(): String {
+        if (dtoClass.isSubclassOf(Enum::class)) {
+            return toEnumCode()
+        }
         val properties = generateProperties()
         val setters = generateSetters()
         val dependencies = dependencyCollection.toCode()
@@ -41,6 +48,15 @@ $setters
 }
         """.trimIndent()
     }
+
+    private fun toEnumCode(): String {
+        return """/** generated code */
+export type ${dtoClass.simpleName} = ${enumValues().joinToString(" | ")};
+export const all${dtoClass.simpleName} = [${enumValues().joinToString(", ")}];
+        """.trimIndent()
+    }
+
+    private fun enumValues() = ((dtoClass as KClass<Enum<*>>).java.enumConstants.asList().map { "'${it.name}'" })
 
     private fun generateProperties(): String {
         return dtoClass.memberProperties.joinToString("\n") { member ->

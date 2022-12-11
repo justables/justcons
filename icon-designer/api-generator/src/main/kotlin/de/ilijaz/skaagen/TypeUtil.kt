@@ -31,12 +31,13 @@ fun kotlinTypeToTsType(kotlinType: KType, dependencyCollection: DependencyCollec
         "Long" -> "number"
 
         "String" -> "string"
+        "UUID" -> "string"
+        "ByteArray" -> "string"
         "Unit" -> "any"
-        else -> tsType
-    }
-
-    if (tsType.endsWith("DTO")) {
-        dependencyCollection.add(kotlinType)
+        else -> {
+            dependencyCollection.add(kotlinType)
+            tsType
+        }
     }
 
     return tsType

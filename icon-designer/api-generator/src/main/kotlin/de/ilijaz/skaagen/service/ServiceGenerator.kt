@@ -18,8 +18,13 @@ class ServiceGenerator(private val controller: KClass<out Any>) {
     fun writeFile() {
         val fileName = toKebabCase(controller.simpleName!!).replace("-controller", ".service.ts")
         val path =
-            listOf(targetPath, controller.java.`package`.name.replace("$rootPackage.", ""), fileName).joinToString("/")
+            listOf(
+                targetPath,
+                controller.java.`package`.name.replace("$rootPackage.", "").replace(".", "/"),
+                fileName
+            ).joinToString("/")
         val code = toCode()
+        File(path).parentFile.mkdirs()
         File(path).writeText(code)
     }
 

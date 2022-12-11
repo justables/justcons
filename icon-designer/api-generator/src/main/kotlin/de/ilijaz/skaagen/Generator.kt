@@ -1,6 +1,7 @@
 package de.ilijaz.skaagen
 
 import de.ilijaz.myapp.myapp.cat.CatController
+import de.ilijaz.myapp.myapp.icon.vectorgraphic.VectorGraphicController
 import de.ilijaz.skaagen.service.ServiceGenerator
 import de.ilijaz.skaagen.service.dtos.dtoCollection
 import de.ilijaz.skaagen.service.dtos.generateDTOs
@@ -24,7 +25,7 @@ fun main(args: Array<String>) {
             rootPackage = it.substring(10)
         }
     }
-    ServiceGenerator(CatController::class).writeFile()
+    ServiceGenerator(VectorGraphicController::class).writeFile()
     while (dtoCollection.isNotEmpty()) {
         generateDTOs()
     }

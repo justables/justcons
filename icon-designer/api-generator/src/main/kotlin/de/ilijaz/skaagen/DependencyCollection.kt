@@ -60,7 +60,7 @@ class DependencyCollection(private val targetPath: List<String>) {
         val packagePathString = calculateRelativePath(targetPath, packagePath)
 
         val className = removeNullableFromType(typeDependency).split(".").last()
-        val fileName = toKebabCase(className).replace("-dto", ".dto")
+        val fileName = toKebabCase(className)
         return "import { $className } from './$packagePathString/$fileName';"
     }
 
