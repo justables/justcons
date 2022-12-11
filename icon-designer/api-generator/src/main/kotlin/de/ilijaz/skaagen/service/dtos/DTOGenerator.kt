@@ -52,7 +52,7 @@ $setters
     private fun toEnumCode(): String {
         return """/** generated code */
 export type ${dtoClass.simpleName} = ${enumValues().joinToString(" | ")};
-export const all${dtoClass.simpleName} = [${enumValues().joinToString(", ")}];
+export const all${dtoClass.simpleName}: ${dtoClass.simpleName}[] = [${enumValues().joinToString(", ")}];
         """.trimIndent()
     }
 
@@ -60,7 +60,7 @@ export const all${dtoClass.simpleName} = [${enumValues().joinToString(", ")}];
 
     private fun generateProperties(): String {
         return dtoClass.memberProperties.joinToString("\n") { member ->
-            "  ${member.name}: ${kotlinTypeToTsType(member.returnType, dependencyCollection)};"
+            "  ${member.name}: ${kotlinTypeToNullableTsType(member.returnType, dependencyCollection)};"
         }
     }
 

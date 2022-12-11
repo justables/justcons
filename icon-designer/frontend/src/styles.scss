@@ -7,5 +7,25 @@ body {
 }
 
 .btn {
-  @apply h-fit py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded font-bold;
+  @apply rounded-md no-animation;
+}
+
+.card {
+  @apply bg-base-100 rounded-md shadow-xl;
+}
+
+.input {
+  @apply input-bordered;
+}
+
+.file-input {
+  @apply file-input-bordered;
+}
+
+.select {
+  @apply select-bordered;
+}
+
+.checkbox {
+  @apply checkbox-sm rounded-sm no-animation;
 }

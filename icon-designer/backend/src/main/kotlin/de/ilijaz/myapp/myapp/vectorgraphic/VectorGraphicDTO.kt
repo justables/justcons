@@ -3,7 +3,7 @@ package de.ilijaz.myapp.myapp.vectorgraphic
 import java.util.*
 
 data class VectorGraphicDTO(
-    val id: UUID,
+    val id: UUID?,
     val name: String,
     val paths: String,
     val type: VectorGraphicType,

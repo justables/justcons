@@ -1,70 +1,102 @@
-<!-- #region file upload -->
-<div class="flex items-center justify-center w-full">
-  <label
-    for="dropzone-file"
-    class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-200 m-4"
-  >
-    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-      <svg
-        aria-hidden="true"
-        class="w-10 h-10 mb-3 text-gray-400"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-        ></path>
-      </svg>
-      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-        <span class="font-semibold">Click to upload</span> or drag and drop
-      </p>
-      <p class="text-xs text-gray-500 dark:text-gray-400">
-        SVG, PNG, JPG or GIF (MAX. 800x400px)
-      </p>
-    </div>
-    <input id="dropzone-file" type="file" class="hidden" />
-  </label>
-</div>
+<form class="card flex flex-col m-4 p-4 gap-4" [formGroup]="form">
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">SVG file</span>
+    </label>
+    <input type="file" class="file-input" [formControl]="svgFileFormControl" />
+  </div>
 
-<!-- #endregion -->
-
-<form>
-  <label
-    for="default-search"
-    class="mb-2 text-sm font-medium text-gray-900 sr-only"
-    >Search</label
-  >
-  <div class="relative">
-    <div
-      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-    >
-      <svg
-        aria-hidden="true"
-        class="w-5 h-5 text-gray-500"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-        ></path>
-      </svg>
+  <h3>New Vector Graphic</h3>
+  <div class="flex flex-col">
+    <div class="form-control">
+      <label class="label"><span class="label-text"> Icon name </span></label>
+      <input
+        class="input"
+        placeholder="Icon name"
+        [formControl]="iconNameFormControl"
+      />
     </div>
-    <input
-      type="search"
-      id="default-search"
-      class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Search Mockups, Logos..."
-      required
-    />
+  </div>
+  <div class="flex flex-col">
+    <div class="form-control">
+      <label class="label flex gap-2 w-fit cursor-pointer">
+        <input
+          type="checkbox"
+          checked="checked"
+          class="checkbox"
+          [formControl]="foregroundFormControl"
+        />
+        <span class="label-text">Foreground</span>
+      </label>
+      <label class="label flex gap-2 w-fit cursor-pointer">
+        <input
+          type="checkbox"
+          class="checkbox"
+          [formControl]="backgroundFormControl"
+        />
+        <span class="label-text">Background</span>
+      </label>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <div class="form-control">
+      <label class="label"
+        ><span class="label-text">Icon filled type</span></label
+      >
+      <select class="select" [formControl]="iconFilledTypeFormControl">
+        <option value="Filled">Filled</option>
+        <option value="Outlined">Outlined</option>
+      </select>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    <div class="form-control">
+      <label class="label"
+        ><span class="label-text"> Children transformation </span></label
+      >
+      <label class="input-group flex">
+        <input
+          type="number"
+          placeholder="x translation"
+          class="input w-full"
+          [formControl]="xTranslationFormControl"
+        />
+        <input
+          type="number"
+          placeholder="y translation"
+          class="input w-full"
+          [formControl]="yTranslationFormControl"
+        />
+        <input
+          type="number"
+          placeholder="scale"
+          class="input w-full"
+          [formControl]="scaleFormControl"
+        />
+        <input
+          type="number"
+          placeholder="rotation"
+          class="input w-full"
+          [formControl]="rotationFormControl"
+        />
+      </label>
+    </div>
+  </div>
+
+  <div class="flex gap-2 ml-auto">
+    <button class="btn btn-ghost" (click)="onDiscard()">Discard</button>
+    <ng-container *ngIf="loadingState$ | async as loadingState">
+      <button
+        [ngClass]="[
+          'btn',
+          'btn-primary',
+          loadingState === 'loading' ? 'loading' : ''
+        ]"
+        (click)="onSave()"
+        [disabled]="!form.valid"
+      >
+        Save
+      </button>
+    </ng-container>
   </div>
 </form>

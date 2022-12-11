@@ -44,4 +44,4 @@ fun kotlinTypeToTsType(kotlinType: KType, dependencyCollection: DependencyCollec
 }
 
 fun kotlinTypeToNullableTsType(kotlinType: KType, dependencyCollection: DependencyCollection) =
-    "${kotlinTypeToTsType(kotlinType, dependencyCollection)} ${if (kotlinType.isMarkedNullable) " | undefined" else ""}"
+    "${kotlinTypeToTsType(kotlinType, dependencyCollection)}${if (kotlinType.isMarkedNullable) " | undefined" else ""}"

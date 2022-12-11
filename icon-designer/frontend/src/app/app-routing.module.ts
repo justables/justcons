@@ -5,7 +5,8 @@ import { VectorGraphicsModule } from './vectorgraphic/vector-graphic.module';
 import { VectorgraphicUpdateComponent } from './vectorgraphic/vectorgraphic-update/vectorgraphic-update.component';
 
 const routes: Routes = [
-  { path: '', component: VectorGraphicComponent },
+  { path: '', redirectTo: 'icons', pathMatch: 'full' },
+  { path: 'icons', component: VectorGraphicComponent },
   { path: 'update-icon', component: VectorgraphicUpdateComponent },
 ];
 

@@ -2,6 +2,7 @@ package de.ilijaz.myapp.myapp.vectorgraphic
 
 import de.ilijaz.myapp.core.crudservice.EntityMapper
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
@@ -17,7 +18,7 @@ class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
     )
 
     override fun fromDTO(dto: VectorGraphicDTO): VectorGraphic = VectorGraphic(
-        id = dto.id,
+        id = dto.id ?: UUID.randomUUID(),
         name = dto.name,
         paths = dto.paths,
         type = dto.type,

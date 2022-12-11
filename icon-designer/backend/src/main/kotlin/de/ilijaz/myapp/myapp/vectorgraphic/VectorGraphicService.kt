@@ -22,6 +22,15 @@ class VectorGraphicService(
         dto
     }
 
+    fun save(vectorGraphics: List<VectorGraphicDTO>): Iterable<VectorGraphicDTO> {
+        vectorGraphics.forEach {
+            vectorGraphicRepository.save(
+                vectorGraphicMapper.fromDTO(it)
+            )
+        }
+        return vectorGraphics
+    }
+
     /**
      * tries to find the vector graphic with the inputted name and matching theme. If the theme doesn't match, it will
      * return the vector graphic with the other possible theme or null
