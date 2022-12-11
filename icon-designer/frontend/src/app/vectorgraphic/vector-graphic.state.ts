@@ -2,6 +2,8 @@ import { defaultRemoteAsset } from './../../core/remote-asset';
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
+  VectorGraphicsDeleteAction,
+  VectorGraphicsDeletedAction,
   VectorGraphicsLoadAction,
   VectorGraphicsLoadedAction,
   VectorGraphicsSaveAction,
@@ -81,6 +83,35 @@ export class VectorGraphicsState {
       patch<VectorGraphicsEntity>({
         loadingState: 'loaded',
         response,
+      })
+    );
+  }
+  @Action(VectorGraphicsDeleteAction)
+  delete(context: StateContext<VectorGraphicsEntity>, { request, onDeleted }: VectorGraphicsDeleteAction) {
+    context.setState(
+      patch<VectorGraphicsEntity>({
+        loadingState: 'loading',
+      })
+    );
+    this.vectorGraphicService.delete(request).subscribe({
+      next: (response) => {
+        context.dispatch(new VectorGraphicsDeletedAction(response));
+        if (onDeleted) {
+          onDeleted();
+        }
+      },
+      error: (error) => handleError({ context, error }),
+    });
+  }
+  @Action(VectorGraphicsDeletedAction)
+  deleted(context: StateContext<VectorGraphicsEntity>, { response }: VectorGraphicsDeletedAction) {
+    const state = context.getState();
+    context.setState(
+      patch<VectorGraphicsEntity>({
+        loadingState: 'loaded',
+        response: state.response?.filter(
+          (vectorGrahic) => response.filter((res) => res.id === vectorGrahic.id).length === 0
+        ),
       })
     );
   }

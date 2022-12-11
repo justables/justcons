@@ -1,0 +1,38 @@
+<div class="flex justify-center m-4 h-fit">
+  <div
+    class="preview border-base-300 bg-base-200 rounded-box flex min-h-[6rem] min-w-[18rem] max-w-4xl flex-wrap items-center justify-center gap-2 overflow-x-hidden border bg-cover bg-top p-4"
+  >
+    <img
+      class="w-[8rem] h-[8rem]"
+      id="base64image"
+      [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
+    />
+  </div>
+  <div class="flex items-center gap-2 w-full h-fit ml-4">
+    <span class="text-4xl">{{ vectorGraphic.name }}</span>
+    <div class="badge">{{ vectorGraphic.type }}</div>
+  </div>
+</div>
+
+<div class="flex justify-end gap-2">
+  <button class="btn btn-ghost">Edit</button>
+
+  <label for="my-modal-4" class="btn btn-warning">Delete</label>
+
+  <!-- Put this part before </body> tag -->
+  <input type="checkbox" id="my-modal-4" class="modal-toggle" />
+  <label for="my-modal-4" class="modal cursor-pointer">
+    <label class="modal-box relative" for="">
+      <h3 class="text-lg font-bold">Delete confirmation</h3>
+      <p class="py-4">
+        Are you sure that you want to delete the icon '{{
+          vectorGraphic.name
+        }}'?
+      </p>
+      <div class="flex gap-2 justify-end">
+        <button class="btn btn-primary">No</button>
+        <button class="btn btn-ghost" (click)="onDelete()">Yes</button>
+      </div>
+    </label>
+  </label>
+</div>

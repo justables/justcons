@@ -15,6 +15,10 @@ import { VectorGraphicDTO } from './/vector-graphic-dto';
 export class VectorGraphicService {
   constructor(protected http: HttpClient) {}
 
+  delete(vectorGraphics: VectorGraphicDTO[]): Observable<VectorGraphicDTO[]> {
+    return this.http.delete<VectorGraphicDTO[]>(`${BASE_URL}/vector-graphic`, { body: vectorGraphics })
+  }
+
   getAll(): Observable<VectorGraphicDTO[]> {
     return this.http.get<VectorGraphicDTO[]>(`${BASE_URL}/vector-graphic`)
   }

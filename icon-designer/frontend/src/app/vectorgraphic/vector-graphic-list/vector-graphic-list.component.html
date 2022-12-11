@@ -1,0 +1,24 @@
+<span class="text-xl">Icons</span>
+<div class="flex flex-wrap justify-center gap-2">
+  <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
+    <ng-container *ngFor="let vectorGraphic of vectorGraphics">
+      <div
+        class="icon-box relative flex flex-col justify-center gap-2 p-2 text-center cursor-pointer"
+        (click)="onSelect(vectorGraphic)"
+      >
+        <div class="p-4 bg-base-200 rounded-xl">
+          <img
+            class="w-16 h-16"
+            id="base64image"
+            [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
+          />
+        </div>
+        <span class="text-sm">{{ vectorGraphic.name }}</span>
+        <div class="overlay absolute top-0 right-0 hidden gap-2 m-3">
+          <div class="btn btn-sm">E</div>
+          <div class="btn btn-sm">D</div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

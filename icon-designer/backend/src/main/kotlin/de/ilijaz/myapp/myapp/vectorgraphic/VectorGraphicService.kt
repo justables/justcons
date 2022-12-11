@@ -1,5 +1,6 @@
 package de.ilijaz.myapp.myapp.vectorgraphic
 
+import de.ilijaz.myapp.core.util.Preconditions
 import org.apache.batik.transcoder.TranscoderInput
 import org.apache.batik.transcoder.TranscoderOutput
 import org.apache.batik.transcoder.image.PNGTranscoder
@@ -27,6 +28,14 @@ class VectorGraphicService(
             vectorGraphicRepository.save(
                 vectorGraphicMapper.fromDTO(it)
             )
+        }
+        return vectorGraphics
+    }
+
+    fun delete(vectorGraphics: List<VectorGraphicDTO>): Iterable<VectorGraphicDTO> {
+        vectorGraphics.forEach {
+            Preconditions.notNull(it.id)
+            vectorGraphicRepository.deleteById(it.id!!)
         }
         return vectorGraphics
     }
@@ -64,8 +73,7 @@ class VectorGraphicService(
     }
 
     private fun stringToXml(svg: String): Document {
-        val documentBuilder = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder()
+        val documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
         return documentBuilder.parse(InputSource(StringReader(svg)))
     }
 }

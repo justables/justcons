@@ -14,4 +14,8 @@ class VectorGraphicController(
     @PostMapping("/vector-graphic")
     fun save(@RequestBody vectorGraphics: List<VectorGraphicDTO>): Iterable<VectorGraphicDTO> =
         vectorGraphicService.save(vectorGraphics)
+
+    @DeleteMapping("/vector-graphic")
+    fun delete(@RequestBody vectorGraphics: List<VectorGraphicDTO>): Iterable<VectorGraphicDTO> =
+        vectorGraphicService.delete(vectorGraphics)
 }
