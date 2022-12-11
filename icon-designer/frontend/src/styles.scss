@@ -29,3 +29,7 @@ body {
 .checkbox {
   @apply checkbox-sm rounded-sm no-animation;
 }
+
+.panel {
+  @apply m-2 p-4 bg-base-100 rounded-lg;
+}

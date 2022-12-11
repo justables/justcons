@@ -19,6 +19,8 @@ export class VectorGraphicUpdateComponent {
   @Select(VectorGraphicsState.loadingState)
   loadingState$!: Observable<LoadingState>;
 
+  vectorGraphic!: VectorGraphicDTO;
+
   form!: FormGroup;
   svgFileFormControl = new FormControl();
   iconNameFormControl = new FormControl('new icon', [Validators.required, Validators.minLength(6)]);
@@ -33,6 +35,20 @@ export class VectorGraphicUpdateComponent {
   constructor(private store: Store, private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit() {
+    this.initForm();
+    this.initVectorGraphic();
+    this.fillForm();
+  }
+
+  onSave() {
+    this.store.dispatch(new VectorGraphicsSaveAction([this.parseIcon()], () => this.navigateBack()));
+  }
+
+  onDiscard() {
+    this.navigateBack();
+  }
+
+  private initForm() {
     this.form = this.formBuilder.group({
       svgFile: this.svgFileFormControl,
       iconNameFormControl: this.iconNameFormControl,
@@ -46,27 +62,47 @@ export class VectorGraphicUpdateComponent {
     });
   }
 
-  onSave() {
-    this.store.dispatch(new VectorGraphicsSaveAction([this.parseIcon()], () => this.navigateBack()));
+  private initVectorGraphic() {
+    const selected = this.store.selectSnapshot(VectorGraphicsState.selected);
+    if (selected !== undefined) {
+      this.vectorGraphic = selected;
+    } else {
+      this.vectorGraphic = {
+        id: undefined,
+        image: undefined,
+        name: 'new icon',
+        paths: '',
+        type: 'Filled',
+        xTranslation: 0,
+        yTranslation: 0,
+        scale: 1,
+        rotation: 0,
+      };
+    }
   }
 
-  onDiscard() {
-    this.navigateBack();
+  private fillForm() {
+    this.iconNameFormControl.setValue(this.vectorGraphic.name);
+    this.iconFilledTypeFormControl.setValue(this.vectorGraphic.type);
+    this.xTranslationFormControl.setValue(this.vectorGraphic.xTranslation);
+    this.yTranslationFormControl.setValue(this.vectorGraphic.yTranslation);
+    this.scaleFormControl.setValue(this.vectorGraphic.scale);
+    this.rotationFormControl.setValue(this.vectorGraphic.rotation);
   }
 
   private parseIcon(): VectorGraphicDTO {
     return {
-      id: undefined,
+      id: this.vectorGraphic.id,
       image: undefined,
       name: Preconditions.notNull(this.iconNameFormControl.value),
-      paths: '',
+      paths: this.vectorGraphic.paths,
       type: Preconditions.in<VectorGraphicType>(
         Preconditions.notNull(this.iconFilledTypeFormControl.value) as VectorGraphicType,
         allVectorGraphicType
       ),
       xTranslation: parseInt(this.xTranslationFormControl.value ?? '0'),
       yTranslation: parseInt(this.yTranslationFormControl.value ?? '0'),
-      scale: parseInt(this.scaleFormControl.value ?? '0'),
+      scale: parseInt(this.scaleFormControl.value ?? '1'),
       rotation: parseInt(this.rotationFormControl.value ?? '0'),
     };
   }

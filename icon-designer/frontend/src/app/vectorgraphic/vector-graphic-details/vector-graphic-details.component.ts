@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { VectorGraphicsDeleteAction, VectorGraphicsSelectAction } from './../vector-graphic.actions';
 import { Store } from '@ngxs/store';
 import { Component, Input } from '@angular/core';
@@ -13,14 +14,17 @@ export class VectorGraphicDetailsComponent {
   @Input()
   vectorGraphic!: VectorGraphicDTO;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private router: Router) {}
 
   ngOnInit() {
     Preconditions.notNull(this.vectorGraphic);
   }
 
+  onEdit() {
+    this.router.navigate(['/update-icon']);
+  }
+
   onDelete() {
-    console.log('foo');
     this.store.dispatch(
       new VectorGraphicsDeleteAction([this.vectorGraphic], () => this.store.dispatch(new VectorGraphicsSelectAction()))
     );

@@ -1,12 +1,22 @@
-<div class="flex m-4 gap-4">
-  <div class="panel w-full">
-    <app-vector-graphics-list></app-vector-graphics-list>
-  </div>
-  <ng-container *ngIf="selected$ | async as selected">
-    <div class="panel w-[200%]">
-      <app-vector-graphic-details
-        [vectorGraphic]="selected"
-      ></app-vector-graphic-details>
+<div class="flex flex-col gap-4 h-full p-4">
+  <div class="panel">
+    <div class="flex gap-2">
+      <span class="text-xl">Actions and filters</span>
+      <div class="flex-1"></div>
+      <div class="btn btn-primary" (click)="onAdd()">Add Icon</div>
+      <div class="btn">Bulk upload</div>
     </div>
-  </ng-container>
+  </div>
+  <div class="flex gap-4 h-full">
+    <div class="panel w-full">
+      <app-vector-graphics-list></app-vector-graphics-list>
+    </div>
+    <ng-container *ngIf="selected$ | async as selected">
+      <div class="panel w-[200%]">
+        <app-vector-graphic-details
+          [vectorGraphic]="selected"
+        ></app-vector-graphic-details>
+      </div>
+    </ng-container>
+  </div>
 </div>
