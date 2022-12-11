@@ -49,7 +49,7 @@ export class ${getServiceName()} {
 """
     }
 
-    private fun getServiceName() = controller.simpleName
+    private fun getServiceName() = controller.simpleName?.replace("Controller", "Service")
 
     private fun getMethods() =
         controller.functions.joinToString("") { ServiceMethod(it, dependencyCollection).toCode() }
