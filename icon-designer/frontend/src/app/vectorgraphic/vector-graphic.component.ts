@@ -10,7 +10,7 @@ import { VectorGraphicsState } from './vector-graphic.state';
   templateUrl: './vector-graphic.component.html',
   styleUrls: ['./vector-graphic.component.scss'],
 })
-export class VectorGraphicsComponent {
+export class VectorGraphicComponent {
   @Select(VectorGraphicsState.vectorGraphics)
   vectorGraphics$!: Observable<VectorGraphicDTO[] | undefined>;
 

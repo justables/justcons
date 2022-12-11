@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-300;
+  @apply h-screen bg-gray-300;
+}
+
+.btn {
+  @apply h-fit py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded font-bold;
 }

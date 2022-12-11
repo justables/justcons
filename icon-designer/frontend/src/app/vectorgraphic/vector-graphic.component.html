@@ -1,4 +1,12 @@
-<p>vector-graphics works!</p>
+<div class="flex">
+  <a
+    [routerLink]="['/update-icon']"
+    routerLinkActive="router-link-active"
+    class="btn m-4"
+  >
+    Add Icon
+  </a>
+</div>
 <div class="flex gap-2">
   <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
     <ng-container *ngFor="let vectorGraphic of vectorGraphics">
