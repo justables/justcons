@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service
 @Service
 class VectorGraphicService(
     private val vectorGraphicRepository: VectorGraphicRepository,
+    private val vectorGraphicMapper: VectorGraphicMapper,
 ) {
+    fun findAll(): List<VectorGraphicDTO> = vectorGraphicRepository.findAll().map { vectorGraphicMapper.toDTO(it) }
+
     /**
      * tries to find the vector graphic with the inputted name and matching theme. If the theme doesn't match, it will
      * return the vector graphic with the other possible theme or null

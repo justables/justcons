@@ -34,5 +34,7 @@ class VectorGraphic(
     val scale: Float get() = parseFloat(transformation.split(delimiter).getOrElse(2) { "1" })
     val rotation: Float get() = parseFloat(transformation.split(delimiter).getOrElse(3) { "0" })
 
+    fun computeSvgPaths(): String = paths.split(";").joinToString("\n") { "<path d=\"$it\" color=\"currentColor\" />" }
+
     private fun parseFloat(value: String): Float = if (value.isBlank()) 0f else value.toFloat()
 }

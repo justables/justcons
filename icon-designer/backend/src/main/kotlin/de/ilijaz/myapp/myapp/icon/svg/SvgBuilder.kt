@@ -44,9 +44,9 @@ data class SvgBuilder(
         val result = ArrayList<String>()
         val transform = createTransform(icon.backgroundIcon)
         result.add("<g transform-origin=\"center\" $transform>")
-        result.add(incrementBy(getIconPaths(icon.baseIcon), 1))
+        result.add(incrementBy(icon.baseIcon.computeSvgPaths(), 1))
         if (icon.additionalIcon != null) {
-            result.add(incrementBy(getIconPaths(icon.additionalIcon), 1))
+            result.add(incrementBy(icon.additionalIcon.computeSvgPaths(), 1))
         }
         result.add("</g>")
         return result.joinToString("\n")
@@ -55,14 +55,11 @@ data class SvgBuilder(
     private fun createTransform(vectorGraphic: VectorGraphic?): String = if (vectorGraphic == null) ""
     else " transform=\"rotate(${vectorGraphic.rotation}) translate(${vectorGraphic.xTranslation} ${vectorGraphic.yTranslation}) scale(${vectorGraphic.scale})\""
 
-    private fun getIconPaths(vectorGraphic: VectorGraphic): String =
-        vectorGraphic.paths.split(";").joinToString("\n") { "<path d=\"$it\" color=\"currentColor\" />" }
-
     private fun getBackgroundIcon(): String {
         val result = ArrayList<String>()
         val mask = if (isMainIconMask()) " mask=\"url(#$mainIconMaskId)\"" else ""
         result.add("<g$mask>")
-        result.add(incrementBy(getIconPaths(icon.backgroundIcon!!), 1))
+        result.add(incrementBy(icon.backgroundIcon!!.computeSvgPaths(), 1))
         result.add("</g>")
         return result.joinToString("\n")
     }

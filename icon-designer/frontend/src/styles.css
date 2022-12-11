@@ -1,0 +1,12 @@
+:root {
+  box-sizing: border-box;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #eee;
+  overflow: hidden;
+}

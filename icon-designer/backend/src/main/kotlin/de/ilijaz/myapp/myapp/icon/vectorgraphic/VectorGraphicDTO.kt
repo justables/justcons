@@ -11,4 +11,5 @@ data class VectorGraphicDTO(
     val yTranslation: Float,
     val scale: Float,
     val rotation: Float,
+    val svg: String?,
 )
