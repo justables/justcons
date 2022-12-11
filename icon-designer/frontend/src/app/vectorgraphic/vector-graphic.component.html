@@ -1,23 +1,12 @@
-<div class="flex">
-  <a
-    [routerLink]="['/update-icon']"
-    routerLinkActive="router-link-active"
-    class="btn m-4"
-  >
-    Add Icon
-  </a>
-</div>
-<div class="flex gap-2">
-  <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
-    <ng-container *ngFor="let vectorGraphic of vectorGraphics">
-      <div class="shadow-md p-2 bg-gray-100">
-        <span>{{ vectorGraphic.name }}</span>
-        <img
-          style="display: block; width: 100px; height: 100px"
-          id="base64image"
-          [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
-        />
-      </div>
-    </ng-container>
+<div class="flex m-4 gap-4">
+  <div class="panel w-full">
+    <app-vector-graphics-list></app-vector-graphics-list>
+  </div>
+  <ng-container *ngIf="selected$ | async as selected">
+    <div class="panel w-[200%]">
+      <app-vector-graphic-details
+        [vectorGraphic]="selected"
+      ></app-vector-graphic-details>
+    </div>
   </ng-container>
 </div>

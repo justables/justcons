@@ -6,7 +6,7 @@ export function handleError({ context, error }: { context: StateContext<RemoteAs
   context.setState(
     patch<RemoteAsset>({
       loadingState: 'error',
-      error,
+      errors: error,
     })
   );
   console.error(error);

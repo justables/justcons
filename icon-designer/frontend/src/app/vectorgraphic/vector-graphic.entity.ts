@@ -3,4 +3,5 @@ import { VectorGraphicDTO } from './vector-graphic-dto';
 
 export interface VectorGraphicsEntity extends RemoteAsset {
   response?: VectorGraphicDTO[];
+  selected?: VectorGraphicDTO;
 }

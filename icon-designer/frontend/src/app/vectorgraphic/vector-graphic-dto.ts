@@ -2,8 +2,8 @@
 
 import { VectorGraphicType } from './/vector-graphic-type';
 export interface VectorGraphicDTO {
-  id: string;
-  image: string;
+  id: string | undefined;
+  image: string | undefined;
   name: string;
   paths: string;
   rotation: number;
@@ -14,8 +14,8 @@ export interface VectorGraphicDTO {
 }
 
 export class VectorGraphic {
-  id: string;
-  image: string;
+  id: string | undefined;
+  image: string | undefined;
   name: string;
   paths: string;
   rotation: number;

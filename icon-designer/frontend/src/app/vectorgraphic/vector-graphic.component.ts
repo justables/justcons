@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { VectorGraphicDTO } from './vector-graphic-dto';
-import { VectorGraphicsLoadAction } from './vector-graphic.actions';
 import { VectorGraphicsState } from './vector-graphic.state';
+import { Component } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { VectorGraphicDTO } from './vector-graphic-dto';
 
 @Component({
   selector: 'app-vector-graphics',
@@ -11,12 +10,6 @@ import { VectorGraphicsState } from './vector-graphic.state';
   styleUrls: ['./vector-graphic.component.scss'],
 })
 export class VectorGraphicComponent {
-  @Select(VectorGraphicsState.vectorGraphics)
-  vectorGraphics$!: Observable<VectorGraphicDTO[] | undefined>;
-
-  constructor(private store: Store) {}
-
-  ngOnInit() {
-    this.store.dispatch(new VectorGraphicsLoadAction());
-  }
+  @Select(VectorGraphicsState.selected)
+  selected$!: Observable<VectorGraphicDTO | undefined>;
 }
