@@ -10,6 +10,7 @@
         type="file"
         class="file-input"
         [formControl]="svgFileFormControl"
+        (change)="onFileChanged($event)"
       />
     </div>
 

@@ -1,6 +1,6 @@
 package de.ilijaz.skaagen
 
-import de.ilijaz.myapp.myapp.cat.CatController
+import de.ilijaz.myapp.myapp.svg.SvgToPathConverterController
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicController
 import de.ilijaz.skaagen.service.ServiceGenerator
 import de.ilijaz.skaagen.service.dtos.dtoCollection
@@ -8,10 +8,6 @@ import de.ilijaz.skaagen.service.dtos.generateDTOs
 
 
 class Generator
-
-val controller = listOf(
-    CatController::class,
-)
 
 fun main(args: Array<String>) {
     args.forEach {
@@ -26,6 +22,7 @@ fun main(args: Array<String>) {
         }
     }
     ServiceGenerator(VectorGraphicController::class).writeFile()
+    ServiceGenerator(SvgToPathConverterController::class).writeFile()
     while (dtoCollection.isNotEmpty()) {
         generateDTOs()
     }

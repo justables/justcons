@@ -1,6 +1,6 @@
 package de.ilijaz.myapp.myapp.vectorgraphic
 
-import de.ilijaz.myapp.myapp.icon.svg.SvgBuilder
+import de.ilijaz.myapp.myapp.svg.IconToSvgConverter
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -41,7 +41,7 @@ class VectorGraphic(
     fun computeSvg(): String =
         "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.0\"" +
             " width=\"32\" height=\"32\" viewBox=\"0 0 24 24\">${
-                SvgBuilder.indentBy(computeSvgPaths(), 1)
+                IconToSvgConverter.indentBy(computeSvgPaths(), 1)
             }\n</svg>"
 
     private fun parseFloat(value: String): Float = if (value.isBlank()) 0f else value.toFloat()

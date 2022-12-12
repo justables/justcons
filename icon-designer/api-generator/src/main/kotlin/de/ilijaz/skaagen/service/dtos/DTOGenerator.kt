@@ -76,5 +76,5 @@ private val generatedDTOs: MutableSet<KClass<out Any>> = mutableSetOf()
 
 fun generateDTOs() {
     generatedDTOs.forEach { dtoCollection.remove(it) }
-    dtoCollection.forEach { DTOGenerator(it).writeFile() }
+    dtoCollection.toMutableList().forEach { DTOGenerator(it).writeFile() }
 }

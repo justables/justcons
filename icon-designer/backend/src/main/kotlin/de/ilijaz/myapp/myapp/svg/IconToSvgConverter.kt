@@ -1,11 +1,11 @@
-package de.ilijaz.myapp.myapp.icon.svg
+package de.ilijaz.myapp.myapp.svg
 
 import de.ilijaz.myapp.myapp.icon.Icon
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicType
 import java.util.*
 
-data class SvgBuilder(
+class IconToSvgConverter(
     val icon: Icon,
     val dimensions: Int,
 ) {

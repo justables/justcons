@@ -9,6 +9,7 @@ import { Select, Store } from '@ngxs/store';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SvgToPathConverterService } from 'src/app/svg/svg-to-path-converter.service';
 
 @Component({
   selector: 'app-vectorgraphic-update',
@@ -32,12 +33,35 @@ export class VectorGraphicUpdateComponent {
   scaleFormControl = new FormControl();
   rotationFormControl = new FormControl();
 
-  constructor(private store: Store, private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private store: Store,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private svgToPathConverterService: SvgToPathConverterService
+  ) {}
 
   ngOnInit() {
     this.initForm();
     this.initVectorGraphic();
     this.fillForm();
+  }
+
+  onFileChanged(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsText(file, 'UTF-8');
+      reader.onload = (evt: any) => {
+        const svg = evt.target.result;
+        this.svgToPathConverterService.svgToPath(svg).subscribe((response) => {
+          this.vectorGraphic.image = response.image;
+          this.vectorGraphic.paths = response.paths;
+        });
+      };
+      reader.onerror = (evt: any) => {
+        throw new Error(evt.target.result);
+      };
+    }
   }
 
   onSave() {
