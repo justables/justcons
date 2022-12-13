@@ -12,6 +12,7 @@ class SvgToPngConverter {
             val coloredSvg = svg.replace(Regex("fill=\"(white|black|currentColor)\""), "fill=\"black\"")
                 .replace(Regex("color=\"(white|black|currentColor)\""), "color=\"black\"")
                 .replace(Regex("stroke=\"(white|black|currentColor)\""), "stroke=\"black\"")
+                .replace(Regex("#ffffff"), "#000000")
             val transcoderInput = TranscoderInput(StringReader(coloredSvg))
             val output = ByteArrayOutputStream()
             val transcoderOutput = TranscoderOutput(output)

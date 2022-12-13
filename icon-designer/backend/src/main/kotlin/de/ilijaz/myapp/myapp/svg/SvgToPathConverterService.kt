@@ -31,7 +31,7 @@ class SvgToPathConverterService {
         val pb =
             ProcessBuilder(
                 "inkscape",
-                "--actions=\"select-all;object-to-path;\"",
+                "--actions=select-all;object-to-path;object-stroke-to-path;",
                 "--export-filename=-",
                 "/tmp/$iconPath.svg"
             )
