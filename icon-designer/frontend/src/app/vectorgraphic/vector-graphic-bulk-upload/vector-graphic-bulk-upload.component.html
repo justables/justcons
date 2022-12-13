@@ -27,7 +27,10 @@
               [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
             />
           </div>
-          <span class="text-sm">{{ vectorGraphic.name }}</span>
+          <span
+            class="w-24 text-xs text-center overflow-hidden overflow-ellipsis whitespace-nowrap"
+            >{{ vectorGraphic.name }}</span
+          >
           <div class="overlay absolute top-0 right-0 hidden gap-2 m-3">
             <div class="btn btn-sm" (click)="removeIcon(vectorGraphic)">D</div>
           </div>

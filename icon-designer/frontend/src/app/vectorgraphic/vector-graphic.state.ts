@@ -91,6 +91,8 @@ export class VectorGraphicsState {
         response,
       })
     );
+    // deselect currently selected vector graphic so no old data can be seen after updating an vector graphic
+    context.dispatch(new VectorGraphicsSelectAction());
   }
   @Action(VectorGraphicsDeleteAction)
   delete(context: StateContext<VectorGraphicsEntity>, { request, onDeleted }: VectorGraphicsDeleteAction) {
