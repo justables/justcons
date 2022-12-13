@@ -1,0 +1,7 @@
+:host {
+  @apply h-full;
+}
+
+.icon-box:hover .overlay {
+  @apply flex;
+}
