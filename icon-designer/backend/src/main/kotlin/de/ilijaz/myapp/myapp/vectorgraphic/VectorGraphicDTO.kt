@@ -6,10 +6,10 @@ data class VectorGraphicDTO(
     val id: UUID?,
     val name: String,
     val paths: String,
-    val type: VectorGraphicType,
-    val xTranslation: Float,
-    val yTranslation: Float,
+    val translationX: Float,
+    val translationY: Float,
     val scale: Float,
     val rotation: Float,
+    val mask: Boolean,
     var image: ByteArray? = null,
 )

@@ -1,38 +1,38 @@
 /** generated code */
 
-import { VectorGraphicType } from './/vector-graphic-type';
+
 export interface VectorGraphicDTO {
   id: string | undefined;
   image: string | undefined;
+  mask: boolean;
   name: string;
   paths: string;
   rotation: number;
   scale: number;
-  type: VectorGraphicType;
-  xTranslation: number;
-  yTranslation: number;
+  translationX: number;
+  translationY: number;
 }
 
 export class VectorGraphic {
   id: string | undefined;
   image: string | undefined;
+  mask: boolean;
   name: string;
   paths: string;
   rotation: number;
   scale: number;
-  type: VectorGraphicType;
-  xTranslation: number;
-  yTranslation: number;
+  translationX: number;
+  translationY: number;
 
   constructor(data: VectorGraphicDTO) {
     this.id = data.id;
     this.image = data.image;
+    this.mask = data.mask;
     this.name = data.name;
     this.paths = data.paths;
     this.rotation = data.rotation;
     this.scale = data.scale;
-    this.type = data.type;
-    this.xTranslation = data.xTranslation;
-    this.yTranslation = data.yTranslation;
+    this.translationX = data.translationX;
+    this.translationY = data.translationY;
   }
 }

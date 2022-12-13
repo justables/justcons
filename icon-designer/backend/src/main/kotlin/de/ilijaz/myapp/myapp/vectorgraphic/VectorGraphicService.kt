@@ -16,6 +16,8 @@ class VectorGraphicService(
         dto
     }
 
+    fun findByName(vectorGraphicName: String): VectorGraphic? = vectorGraphicRepository.findByName(vectorGraphicName)
+
     fun save(vectorGraphics: List<VectorGraphicDTO>): Iterable<VectorGraphicDTO> {
         vectorGraphics.forEach {
             vectorGraphicRepository.save(
@@ -33,14 +35,4 @@ class VectorGraphicService(
         return vectorGraphics
     }
 
-    /**
-     * tries to find the vector graphic with the inputted name and matching theme. If the theme doesn't match, it will
-     * return the vector graphic with the other possible theme or null
-     */
-    fun getBySelector(vectorGraphicSelectorDTO: VectorGraphicSelectorDTO): VectorGraphic? {
-        val vectorGraphics = vectorGraphicRepository.findByName(vectorGraphicSelectorDTO.name)
-        return if (vectorGraphics.isEmpty()) {
-            null
-        } else vectorGraphics.find { it.type == vectorGraphicSelectorDTO.type } ?: vectorGraphics.first()
-    }
 }

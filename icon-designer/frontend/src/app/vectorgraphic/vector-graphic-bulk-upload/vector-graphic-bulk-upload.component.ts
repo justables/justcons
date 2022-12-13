@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { SvgToPathConverterResultDTO } from 'src/app/svg/svg-to-path-converter-result-dto';
 import { SvgToPathConverterService } from 'src/app/svg/svg-to-path-converter.service';
 import { LoadingState } from 'src/core/loading-state';
-import { VectorGraphic } from '../vector-graphic-dto';
 import { VectorGraphicsSaveAction } from '../vector-graphic.actions';
 import { VectorGraphicsState } from '../vector-graphic.state';
 
@@ -65,9 +64,9 @@ export class VectorGraphicBulkUploadComponent {
           paths: vectorGraphic.paths,
           rotation: 0,
           scale: 1,
-          type: 'Filled',
-          xTranslation: 0,
-          yTranslation: 0,
+          translationX: 0,
+          translationY: 0,
+          mask: false,
         })),
         () => this.navigateBack()
       )

@@ -1,4 +1,3 @@
-import { allVectorGraphicType, VectorGraphicType } from '../vector-graphic-type';
 import { Preconditions } from '../../../core/preconditions';
 import { VectorGraphicDTO } from '../vector-graphic-dto';
 import { VectorGraphicsSaveAction } from '../vector-graphic.actions';
@@ -23,15 +22,13 @@ export class VectorGraphicUpdateComponent {
   vectorGraphic!: VectorGraphicDTO;
 
   form!: FormGroup;
-  svgFileFormControl = new FormControl();
-  iconNameFormControl = new FormControl('new icon', [Validators.required, Validators.minLength(6)]);
-  foregroundFormControl = new FormControl();
-  backgroundFormControl = new FormControl();
-  iconFilledTypeFormControl = new FormControl('Filled', [Validators.required]);
-  xTranslationFormControl = new FormControl();
-  yTranslationFormControl = new FormControl();
-  scaleFormControl = new FormControl();
-  rotationFormControl = new FormControl();
+  svgFileFormControl = new FormControl<string | null>(null);
+  iconNameFormControl = new FormControl<string>('new icon', [Validators.required, Validators.minLength(6)]);
+  translationXFormControl = new FormControl<number>(0);
+  translationYFormControl = new FormControl<number>(0);
+  scaleFormControl = new FormControl<number>(1);
+  rotationFormControl = new FormControl<number>(0);
+  iconMaskFormControl = new FormControl<boolean>(false, [Validators.required]);
 
   constructor(
     private store: Store,
@@ -76,11 +73,9 @@ export class VectorGraphicUpdateComponent {
     this.form = this.formBuilder.group({
       svgFile: this.svgFileFormControl,
       iconNameFormControl: this.iconNameFormControl,
-      foregroundFormControl: this.foregroundFormControl,
-      backgroundFormControl: this.backgroundFormControl,
-      iconFilledTypeFormControl: this.iconFilledTypeFormControl,
-      xTranslationFormControl: this.xTranslationFormControl,
-      yTranslationFormControl: this.yTranslationFormControl,
+      iconFilledTypeFormControl: this.iconMaskFormControl,
+      translationXFormControl: this.translationXFormControl,
+      translationYFormControl: this.translationYFormControl,
       scaleFormControl: this.scaleFormControl,
       rotationFormControl: this.rotationFormControl,
     });
@@ -96,22 +91,22 @@ export class VectorGraphicUpdateComponent {
         image: undefined,
         name: 'new icon',
         paths: '',
-        type: 'Filled',
-        xTranslation: 0,
-        yTranslation: 0,
+        translationX: 0,
+        translationY: 0,
         scale: 1,
         rotation: 0,
+        mask: false,
       };
     }
   }
 
   private fillForm() {
     this.iconNameFormControl.setValue(this.vectorGraphic.name);
-    this.iconFilledTypeFormControl.setValue(this.vectorGraphic.type);
-    this.xTranslationFormControl.setValue(this.vectorGraphic.xTranslation);
-    this.yTranslationFormControl.setValue(this.vectorGraphic.yTranslation);
+    this.translationXFormControl.setValue(this.vectorGraphic.translationX);
+    this.translationYFormControl.setValue(this.vectorGraphic.translationY);
     this.scaleFormControl.setValue(this.vectorGraphic.scale);
     this.rotationFormControl.setValue(this.vectorGraphic.rotation);
+    this.iconMaskFormControl.setValue(this.vectorGraphic.mask);
   }
 
   private parseIcon(): VectorGraphicDTO {
@@ -120,14 +115,11 @@ export class VectorGraphicUpdateComponent {
       image: undefined,
       name: Preconditions.notNull(this.iconNameFormControl.value),
       paths: this.vectorGraphic.paths,
-      type: Preconditions.in<VectorGraphicType>(
-        Preconditions.notNull(this.iconFilledTypeFormControl.value) as VectorGraphicType,
-        allVectorGraphicType
-      ),
-      xTranslation: parseInt(this.xTranslationFormControl.value ?? '0'),
-      yTranslation: parseInt(this.yTranslationFormControl.value ?? '0'),
-      scale: parseInt(this.scaleFormControl.value ?? '1'),
-      rotation: parseInt(this.rotationFormControl.value ?? '0'),
+      mask: this.iconMaskFormControl.value ?? false,
+      translationX: this.translationXFormControl.value ?? 0,
+      translationY: this.translationYFormControl.value ?? 0,
+      scale: this.scaleFormControl.value ?? 1,
+      rotation: this.rotationFormControl.value ?? 0,
     };
   }
 

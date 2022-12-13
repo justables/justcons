@@ -29,6 +29,7 @@ fun kotlinTypeToTsType(kotlinType: KType, dependencyCollection: DependencyCollec
         "Int" -> "number"
         "Float" -> "number"
         "Long" -> "number"
+        "Boolean" -> "boolean"
 
         "String" -> "string"
         "UUID" -> "string"

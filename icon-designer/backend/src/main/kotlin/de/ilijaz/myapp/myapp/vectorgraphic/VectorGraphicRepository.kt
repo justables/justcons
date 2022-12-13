@@ -7,5 +7,5 @@ import java.util.*
 
 interface VectorGraphicRepository : CrudRepository<VectorGraphic, UUID> {
     @Query("select vg from VectorGraphic vg where vg.name = :name")
-    fun findByName(@Param("name") name: String): List<VectorGraphic>
+    fun findByName(@Param("name") name: String): VectorGraphic?
 }

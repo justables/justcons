@@ -10,18 +10,21 @@ class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
         id = entity.id,
         name = entity.name,
         paths = entity.paths,
-        type = entity.type,
-        xTranslation = entity.xTranslation,
-        yTranslation = entity.yTranslation,
+        translationX = entity.translationX,
+        translationY = entity.translationY,
         scale = entity.scale,
         rotation = entity.rotation,
+        mask = entity.mask,
     )
 
     override fun fromDTO(dto: VectorGraphicDTO): VectorGraphic = VectorGraphic(
         id = dto.id ?: UUID.randomUUID(),
         name = dto.name,
         paths = dto.paths,
-        type = dto.type,
-        transformation = VectorGraphic.createTransformation(dto.xTranslation, dto.yTranslation, dto.scale, dto.rotation)
+        translationX = dto.translationX,
+        translationY = dto.translationY,
+        scale = dto.scale,
+        rotation = dto.rotation,
+        mask = dto.mask,
     )
 }

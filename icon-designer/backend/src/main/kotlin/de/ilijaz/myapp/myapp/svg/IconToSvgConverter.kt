@@ -2,7 +2,6 @@ package de.ilijaz.myapp.myapp.svg
 
 import de.ilijaz.myapp.myapp.icon.Icon
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
-import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicType
 import java.util.*
 
 class IconToSvgConverter(
@@ -19,11 +18,11 @@ class IconToSvgConverter(
         val result = ArrayList<String>()
         result.add("<svg width=\"$dimensions\" height=\"$dimensions\" viewBox=\"0 0 $dimensions $dimensions\">")
         result.add("  <defs>")
-        if (isMainIconMask()) {
+        if (icon.backgroundIcon?.mask == true) {
             result.add(indentBy(getBaseIconMask(), 2))
         }
         result.add("  </defs>")
-        if (!isMainIconMask()) {
+        if (!(icon.backgroundIcon?.mask == true)) {
             result.add(indentBy(getBaseIcon(), 1))
         }
         if (icon.backgroundIcon != null) {
@@ -32,8 +31,6 @@ class IconToSvgConverter(
         result.add("</svg>")
         return result.joinToString("\n")
     }
-
-    private fun isMainIconMask(): Boolean = icon.backgroundIcon?.type == VectorGraphicType.Filled
 
     private fun getBaseIconMask(): String {
         val result = ArrayList<String>()
@@ -57,11 +54,11 @@ class IconToSvgConverter(
     }
 
     private fun createTransform(vectorGraphic: VectorGraphic?): String = if (vectorGraphic == null) ""
-    else " transform=\"rotate(${vectorGraphic.rotation}) translate(${vectorGraphic.xTranslation} ${vectorGraphic.yTranslation}) scale(${vectorGraphic.scale})\""
+    else " transform=\"rotate(${vectorGraphic.rotation}) translate(${vectorGraphic.translationX} ${vectorGraphic.translationY}) scale(${vectorGraphic.scale})\""
 
     private fun getBackgroundIcon(): String {
         val result = ArrayList<String>()
-        val mask = if (isMainIconMask()) " mask=\"url(#$mainIconMaskId)\"" else ""
+        val mask = if (icon.backgroundIcon?.mask == true) " mask=\"url(#$mainIconMaskId)\"" else ""
         result.add("<g$mask>")
         result.add(indentBy(icon.backgroundIcon!!.computeSvgPaths(), 1))
         result.add("</g>")
