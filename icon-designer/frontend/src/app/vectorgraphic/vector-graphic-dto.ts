@@ -2,6 +2,7 @@
 
 
 export interface VectorGraphicDTO {
+  dimensions: number;
   id: string | undefined;
   image: string | undefined;
   mask: boolean;
@@ -14,6 +15,7 @@ export interface VectorGraphicDTO {
 }
 
 export class VectorGraphic {
+  dimensions: number;
   id: string | undefined;
   image: string | undefined;
   mask: boolean;
@@ -25,6 +27,7 @@ export class VectorGraphic {
   translationY: number;
 
   constructor(data: VectorGraphicDTO) {
+    this.dimensions = data.dimensions;
     this.id = data.id;
     this.image = data.image;
     this.mask = data.mask;

@@ -53,6 +53,7 @@ export class VectorGraphicUpdateComponent {
         this.svgToPathConverterService.svgToPath(svg).subscribe((response) => {
           this.vectorGraphic.image = response.image;
           this.vectorGraphic.paths = response.paths;
+          this.vectorGraphic.dimensions = response.dimensions;
         });
       };
       reader.onerror = (evt: any) => {
@@ -91,6 +92,7 @@ export class VectorGraphicUpdateComponent {
         image: undefined,
         name: 'new icon',
         paths: '',
+        dimensions: 24,
         translationX: 0,
         translationY: 0,
         scale: 1,
@@ -115,6 +117,7 @@ export class VectorGraphicUpdateComponent {
       image: undefined,
       name: Preconditions.notNull(this.iconNameFormControl.value),
       paths: this.vectorGraphic.paths,
+      dimensions: this.vectorGraphic.dimensions,
       mask: this.iconMaskFormControl.value ?? false,
       translationX: this.translationXFormControl.value ?? 0,
       translationY: this.translationYFormControl.value ?? 0,

@@ -62,6 +62,7 @@ export class VectorGraphicBulkUploadComponent {
           image: undefined,
           name: vectorGraphic.name,
           paths: vectorGraphic.paths,
+          dimensions: vectorGraphic.dimensions,
           rotation: 0,
           scale: 1,
           translationX: 0,
