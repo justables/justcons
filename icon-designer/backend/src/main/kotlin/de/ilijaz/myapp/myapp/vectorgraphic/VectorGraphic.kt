@@ -24,11 +24,8 @@ class VectorGraphic(
     val rotation: Float = 0f,
     val mask: Boolean = false,
 ) {
-    fun computeSvgPaths(): String =
-        paths.split(";").joinToString("\n") { "<path fill-rule=\"evenodd\" d=\"$it\" color=\"currentColor\" />" }
-
     fun computeSvg(): String =
         "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.0\" width=\"$dimensions\" height=\"$dimensions\" viewBox=\"0 0 $dimensions $dimensions\">${
-            IconToSvgConverter.indentBy(computeSvgPaths(), 1)
+            IconToSvgConverter.indentBy(paths, 1)
         }\n</svg>"
 }

@@ -5,8 +5,8 @@ import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
 import java.util.*
 
 class IconToSvgConverter(
-    val icon: Icon,
-    val dimensions: Int,
+    private val icon: Icon,
+    private val dimensions: Int,
 ) {
     companion object {
         fun indentBy(input: String, increments: Int) = input.lines().joinToString("\n") { "  ".repeat(increments) + it }
@@ -45,9 +45,9 @@ class IconToSvgConverter(
         val result = ArrayList<String>()
         val transform = createTransform(icon.backgroundIcon)
         result.add("<g transform-origin=\"center\" $transform>")
-        result.add(indentBy(icon.baseIcon.computeSvgPaths(), 1))
+        result.add(indentBy(icon.baseIcon.paths, 1))
         if (icon.additionalIcon != null) {
-            result.add(indentBy(icon.additionalIcon.computeSvgPaths(), 1))
+            result.add(indentBy(icon.additionalIcon.paths, 1))
         }
         result.add("</g>")
         return result.joinToString("\n")
@@ -60,7 +60,7 @@ class IconToSvgConverter(
         val result = ArrayList<String>()
         val mask = if (icon.backgroundIcon?.mask == true) " mask=\"url(#$mainIconMaskId)\"" else ""
         result.add("<g$mask>")
-        result.add(indentBy(icon.backgroundIcon!!.computeSvgPaths(), 1))
+        result.add(indentBy(icon.backgroundIcon!!.paths, 1))
         result.add("</g>")
         return result.joinToString("\n")
     }
