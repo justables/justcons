@@ -15,6 +15,7 @@ class SvgToPathConverterService {
 
     fun convert(svg: String): SvgToPathConverterResultDTO = SvgToPathConverterResultDTO(
         convertSvgToPath(svg),
+        getDimensions(svg),
         SvgToPngConverter.svgToPng(convertSvgToSvgPath(svg))
     )
 
@@ -24,6 +25,9 @@ class SvgToPathConverterService {
         val paths = IntStream.range(0, nodeList.length).mapToObj(nodeList::item).toList()
         return paths.map { it.attributes.getNamedItem("d").textContent }.toList().joinToString(";")
     }
+
+    fun getDimensions(svg: String): Float =
+        stringToXml(svg).documentElement.attributes.getNamedItem("width").textContent.toFloat()
 
     fun convertSvgToSvgPath(svg: String): String {
         val iconPath = UUID.randomUUID()

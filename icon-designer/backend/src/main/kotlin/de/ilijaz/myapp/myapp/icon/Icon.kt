@@ -16,5 +16,5 @@ data class Icon(
     val upperLeftCornerIcon: VectorGraphic?,
     val upperLeftCornerIconBackground: VectorGraphic?,
 ) {
-    fun render(): String = IconToSvgConverter(this, 24).render()
+    fun render(): String = IconToSvgConverter(this, 32).render()
 }
