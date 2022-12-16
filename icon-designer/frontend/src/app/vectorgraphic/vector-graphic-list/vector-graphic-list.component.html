@@ -7,11 +7,9 @@
         (click)="onSelect(vectorGraphic)"
       >
         <div class="p-4 bg-base-200 rounded-xl">
-          <img
-            class="w-16 h-16"
-            id="base64image"
-            [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
-          />
+          <app-base64-image
+            [img]="vectorGraphic.image ?? ''"
+          ></app-base64-image>
         </div>
         <span
           class="w-24 text-xs text-center overflow-hidden overflow-ellipsis whitespace-nowrap"

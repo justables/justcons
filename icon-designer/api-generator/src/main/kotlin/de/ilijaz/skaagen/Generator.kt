@@ -1,5 +1,6 @@
 package de.ilijaz.skaagen
 
+import de.ilijaz.myapp.myapp.icon.IconController
 import de.ilijaz.myapp.myapp.svg.SvgToPathConverterController
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicController
 import de.ilijaz.skaagen.service.ServiceGenerator
@@ -21,8 +22,9 @@ fun main(args: Array<String>) {
             rootPackage = it.substring(10)
         }
     }
-    ServiceGenerator(VectorGraphicController::class).writeFile()
-    ServiceGenerator(SvgToPathConverterController::class).writeFile()
+    listOf(VectorGraphicController::class, SvgToPathConverterController::class, IconController::class).forEach {
+        ServiceGenerator(it).writeFile()
+    }
     while (dtoCollection.isNotEmpty()) {
         generateDTOs()
     }

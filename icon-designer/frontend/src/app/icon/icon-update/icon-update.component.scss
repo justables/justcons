@@ -1,0 +1,23 @@
+:host {
+  @apply h-full;
+}
+
+.icon-placeholder {
+  @apply flex justify-center items-center w-28 h-28 m-2 border border-gray-300 bg-base-100 rounded-xl cursor-pointer;
+}
+
+.icon-placeholder-corner {
+  @apply w-12 h-12;
+}
+
+.icon-placeholder.selected {
+  @apply border-primary;
+}
+
+.icon-layer {
+  @apply rounded-lg;
+}
+
+.icon-layer.selected {
+  @apply border border-primary;
+}

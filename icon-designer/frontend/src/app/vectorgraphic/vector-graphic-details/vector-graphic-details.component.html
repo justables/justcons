@@ -1,12 +1,9 @@
 <div class="flex justify-center m-4 h-fit">
-  <div
-    class="preview border-base-300 bg-base-200 rounded-box flex min-h-[6rem] min-w-[18rem] max-w-4xl flex-wrap items-center justify-center gap-2 overflow-x-hidden border bg-cover bg-top p-4"
-  >
-    <img
-      class="w-[8rem] h-[8rem]"
-      id="base64image"
-      [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
-    />
+  <div class="preview w-[18rem] h-[12rem]">
+    <app-base64-image
+      classes="w-[8rem] h-[8rem]"
+      [img]="vectorGraphic.image ?? ''"
+    ></app-base64-image>
   </div>
   <div class="flex items-center gap-2 w-full h-fit ml-4">
     <span class="text-4xl">{{ vectorGraphic.name }}</span>

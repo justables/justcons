@@ -1,7 +1,6 @@
 package de.ilijaz.myapp.myapp.vectorgraphic
 
 import de.ilijaz.myapp.core.util.Preconditions
-import de.ilijaz.myapp.myapp.svg.SvgToPngConverter
 import org.springframework.stereotype.Service
 
 
@@ -12,7 +11,6 @@ class VectorGraphicService(
 ) {
     fun findAll(): List<VectorGraphicDTO> = vectorGraphicRepository.findAll().map {
         val dto = vectorGraphicMapper.toDTO(it)
-        dto.image = SvgToPngConverter.svgToPng(it.computeSvg())
         dto
     }
 

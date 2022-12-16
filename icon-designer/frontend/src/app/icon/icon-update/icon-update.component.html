@@ -1,0 +1,132 @@
+<div class="panels">
+  <div class="row h-full">
+    <div class="flex flex-col panel">
+      <div class="title">Icon</div>
+      <div class="preview flex justify-Center items-Center m-8 h-full">
+        <div>
+          <div
+            [ngClass]="[
+              'icon-placeholder icon-placeholder-corner',
+              selectedIconStack === 'TopLeft' ? 'selected' : ''
+            ]"
+            (click)="selectedIconStack = 'TopLeft'"
+          >
+            <app-base64-image
+              classes="w-8 h-8"
+              [img]="getStackByPosition('TopLeft').image ?? ''"
+            ></app-base64-image>
+          </div>
+          <div
+            [ngClass]="[
+              'icon-placeholder icon-placeholder-corner',
+              selectedIconStack === 'BottomLeft' ? 'selected' : ''
+            ]"
+            (click)="selectedIconStack = 'BottomLeft'"
+          >
+            <app-base64-image
+              classes="w-8 h-8"
+              [img]="getStackByPosition('BottomLeft').image ?? ''"
+            ></app-base64-image>
+          </div>
+        </div>
+        <div
+          [ngClass]="[
+            'icon-placeholder',
+            selectedIconStack === 'Center' ? 'selected' : ''
+          ]"
+          (click)="selectedIconStack = 'Center'"
+        >
+          <app-base64-image
+            [img]="getStackByPosition('Center').image ?? ''"
+          ></app-base64-image>
+        </div>
+        <div>
+          <div
+            [ngClass]="[
+              'icon-placeholder icon-placeholder-corner',
+              selectedIconStack === 'TopRight' ? 'selected' : ''
+            ]"
+            (click)="selectedIconStack = 'TopRight'"
+          >
+            <app-base64-image
+              classes="w-8 h-8"
+              [img]="getStackByPosition('TopRight').image ?? ''"
+            ></app-base64-image>
+          </div>
+          <div
+            [ngClass]="[
+              'icon-placeholder icon-placeholder-corner',
+              selectedIconStack === 'BottomRight' ? 'selected' : ''
+            ]"
+            (click)="selectedIconStack = 'BottomRight'"
+          >
+            <app-base64-image
+              classes="w-8 h-8"
+              [img]="getStackByPosition('BottomRight').image ?? ''"
+            ></app-base64-image>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="title">Layer</div>
+      <div class="flex flex-col gap-4 m-4">
+        <div
+          [ngClass]="[
+            'icon-layer flex gap-4 cursor-pointer',
+            currentIconLayer === iconLayer ? 'selected' : ''
+          ]"
+          (click)="
+            currentIconLayer =
+              currentIconLayer === iconLayer ? undefined : iconLayer
+          "
+          *ngFor="let iconLayer of currentStack.iconLayer"
+        >
+          <div class="preview">
+            <app-base64-image
+              [img]="iconLayer.vectorGraphic?.image ?? ''"
+            ></app-base64-image>
+          </div>
+          <span>{{ iconLayer.vectorGraphic?.name }}</span>
+          <div class="flex-1"></div>
+          <div class="btn">D</div>
+          <div class="btn">E</div>
+        </div>
+        <div class="btn" (click)="onAddLayer()">+</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel h-full">
+    <div class="title">Vector Graphic Selector</div>
+    <div
+      class="flex flex-wrap justify-center gap-2"
+      *ngIf="currentIconLayer !== undefined"
+    >
+      <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
+        <ng-container *ngFor="let vectorGraphic of vectorGraphics">
+          <div
+            class="icon-box relative flex flex-col justify-center gap-2 p-2 text-center cursor-pointer"
+            (click)="onSelectVectorGraphic(vectorGraphic)"
+          >
+            <div class="p-4 bg-base-200 rounded-xl">
+              <app-base64-image
+                [img]="vectorGraphic.image ?? ''"
+              ></app-base64-image>
+            </div>
+            <span
+              class="w-24 text-xs text-center overflow-hidden overflow-ellipsis whitespace-nowrap"
+              >{{ vectorGraphic.name }}</span
+            >
+            <div class="overlay absolute top-0 right-0 hidden gap-2 m-3">
+              <div class="btn btn-sm">E</div>
+              <div class="btn btn-sm">D</div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="title">Actions</div>
+  </div>
+</div>

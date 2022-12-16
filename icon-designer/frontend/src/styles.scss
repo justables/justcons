@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "style/panel.scss";
+
 body {
   @apply h-screen bg-gray-300;
 }
@@ -30,6 +32,6 @@ body {
   @apply checkbox-sm rounded-sm no-animation;
 }
 
-.panel {
-  @apply m-2 p-4 bg-base-100 rounded-lg;
+.preview {
+  @apply border-base-300 bg-base-200 rounded-box flex flex-wrap items-center justify-center gap-2 overflow-x-hidden border bg-cover bg-top p-4;
 }

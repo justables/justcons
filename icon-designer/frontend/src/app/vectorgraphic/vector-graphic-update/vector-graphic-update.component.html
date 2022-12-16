@@ -15,11 +15,10 @@
     </div>
 
     <div class="m-2">
-      <img
-        class="w-[8rem] h-[8rem]"
-        id="base64image"
-        [src]="'data:image/jpeg;base64,' + vectorGraphic.image"
-      />
+      <app-base64-image
+        classes="w-[8rem] h-[8rem]"
+        [img]="vectorGraphic.image ?? ''"
+      ></app-base64-image>
     </div>
 
     <div class="flex flex-col">

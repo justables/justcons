@@ -1,6 +1,7 @@
 package de.ilijaz.myapp.myapp.vectorgraphic
 
 import de.ilijaz.myapp.core.crudservice.EntityMapper
+import de.ilijaz.myapp.myapp.svg.SvgToPngConverter
 import org.springframework.stereotype.Component
 import java.util.*
 
@@ -16,6 +17,7 @@ class VectorGraphicMapper : EntityMapper<VectorGraphic, VectorGraphicDTO>() {
         scale = entity.scale,
         rotation = entity.rotation,
         mask = entity.mask,
+        image = SvgToPngConverter.svgToPng(entity.computeSvg()),
     )
 
     override fun fromDTO(dto: VectorGraphicDTO): VectorGraphic = VectorGraphic(

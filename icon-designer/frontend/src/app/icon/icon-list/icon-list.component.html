@@ -1,0 +1,3 @@
+<ng-container *ngIf="icons$ | async as icons">
+  <p *ngFor="let icon of icons">{{ icon.name }}</p>
+</ng-container>

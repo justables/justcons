@@ -19,6 +19,6 @@ export class VectorGraphicComponent {
 
   onAdd() {
     this.store.dispatch(new VectorGraphicsSelectAction());
-    this.router.navigate(['/update-icon']);
+    this.router.navigate(['/vector-graphics/update']);
   }
 }

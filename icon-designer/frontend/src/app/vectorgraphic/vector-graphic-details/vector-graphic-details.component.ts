@@ -21,7 +21,7 @@ export class VectorGraphicDetailsComponent {
   }
 
   onEdit() {
-    this.router.navigate(['/update-icon']);
+    this.router.navigate(['/vector-graphics/update']);
   }
 
   onDelete() {

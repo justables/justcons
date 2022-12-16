@@ -22,10 +22,11 @@
         class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
+          <a [routerLink]="['/vector-graphics']">Vectors</a>
+        </li>
+        <li>
           <a [routerLink]="['/icons']">Icons</a>
         </li>
-        <li><a>Configurator</a></li>
-        <li><a>My list</a></li>
       </ul>
     </div>
     <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
@@ -33,14 +34,15 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       <li>
+        <a [routerLink]="['/vector-graphics']">Vectors</a>
+      </li>
+      <li>
         <a [routerLink]="['/icons']">Icons</a>
       </li>
-      <li><a>Configurator</a></li>
-      <li><a>My list</a></li>
     </ul>
   </div>
   <div class="navbar-end gap-2">
     <a class="btn btn-ghost">Login</a>
-    <a class="btn btn-primary">Sign in</a>
+    <a class="btn btn-primary">Sign up</a>
   </div>
 </div>
