@@ -23,7 +23,7 @@ export class VectorGraphicUpdateComponent {
 
   form!: FormGroup;
   svgFileFormControl = new FormControl<string | null>(null);
-  iconNameFormControl = new FormControl<string>('new icon', [Validators.required, Validators.minLength(6)]);
+  iconNameFormControl = new FormControl<string>('new icon', [Validators.required, Validators.minLength(2)]);
   translationXFormControl = new FormControl<number>(0);
   translationYFormControl = new FormControl<number>(0);
   scaleFormControl = new FormControl<number>(1);
@@ -127,6 +127,6 @@ export class VectorGraphicUpdateComponent {
   }
 
   private navigateBack() {
-    this.router.navigate(['/icons']);
+    this.router.navigate(['/vector-graphics']);
   }
 }

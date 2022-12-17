@@ -36,19 +36,21 @@ class IconRendererService {
         iconStack.iconLayer.forEach { iconLayer ->
             val vectorGraphic: VectorGraphic = iconLayer.vectorGraphic ?: return
             var attributes = ""
-            if (vectorGraphic.mask) {
-                id = UUID.randomUUID().toString()
-                attributes += " mask=\"url(#$id)\""
-            }
             if (lastVectorGraphic != null) {
                 val offset = Math.sqrt(2.0) * dimensions * 3 / 8
                 val rotation = lastVectorGraphic!!.rotation
+                val scale = lastVectorGraphic!!.scale
+                val scaleOffset = (1 - scale) * (dimensions / 2)
                 val translationX =
-                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 45)) * dimensions * 3 / 4 + offset
+                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 45)) * dimensions * 3 / 4 + offset + scaleOffset
 
                 val translationY =
-                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 135)) * dimensions * 3 / 4 + offset
-                attributes += " transform=\"translate($translationX, $translationY) scale(${lastVectorGraphic!!.scale}) rotate($rotation)\""
+                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 135)) * dimensions * 3 / 4 + offset + scaleOffset
+                attributes += " transform=\"translate($translationX, $translationY) scale($scale) rotate($rotation)\""
+            }
+            if (vectorGraphic.mask) {
+                id = UUID.randomUUID().toString()
+                attributes += " mask=\"url(#$id)\""
             }
             groups.add(
                 IconRendererGroup(
