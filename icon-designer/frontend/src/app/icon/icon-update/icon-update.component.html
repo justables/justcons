@@ -3,7 +3,7 @@
     <div class="flex flex-col panel">
       <div class="title">Icon</div>
       <div class="preview flex justify-Center items-Center m-8 h-full">
-        <div>
+        <div *ngIf="icon$ | async as icon">
           <div
             [ngClass]="[
               'icon-placeholder icon-placeholder-corner',

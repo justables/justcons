@@ -29,39 +29,59 @@ class IconRendererService {
 
     private fun renderStack(iconStack: IconStack, groups: ArrayList<IconRendererGroup>) {
         var groupType = IconRendererGroupType.Group
-        var lastId: String? = null
+        var lastGroupType = IconRendererGroupType.Group
+        var id = UUID.randomUUID().toString()
         iconStack.iconLayer.forEach { iconLayer ->
-            val id = UUID.randomUUID().toString()
             val vectorGraphic: VectorGraphic = iconLayer.vectorGraphic ?: return
+            var attributes = ""
+            if (vectorGraphic.mask) {
+                id = UUID.randomUUID().toString()
+                attributes += " mask=\"url(#$id)\""
+            }
             groups.add(
                 IconRendererGroup(
-                    groupType,
-                    listOf("<[GroupTagName] id=\"$id\">", "  " + vectorGraphic.paths, "</[GroupTagName]>")
+                    id = id,
+                    lastGroupType,
+                    listOf("<g$attributes>", "  " + vectorGraphic.paths, "</g>")
                 )
             )
-            lastId = id
             if (vectorGraphic.mask) {
                 groupType =
                     if (groupType == IconRendererGroupType.Group) IconRendererGroupType.Mask else IconRendererGroupType.Group
             }
+            lastGroupType = groupType
         }
     }
 
     private fun renderDefs(groups: ArrayList<IconRendererGroup>): List<String> {
         val result = ArrayList<String>()
-        groups.filter { group -> group.type == IconRendererGroupType.ClipRect }.forEach {
-            result.addAll(it.lines.map { line -> line.replace("[GroupTagName]", "clipPath") })
-        }
-        groups.filter { group -> group.type == IconRendererGroupType.Mask }.forEach {
-            result.addAll(it.lines.map { line -> line.replace("[GroupTagName]", "mask") })
-        }
+        groups.filter { group -> group.type == IconRendererGroupType.ClipRect }.groupBy { group -> group.id }
+            .forEach { (id, groups) ->
+                result.add("<clipPath id=\"$id\">")
+                groups.map { group -> indentBy(group.lines, 1) }.forEach { lines -> result.addAll(lines) }
+                result.add("</clipPath>")
+            }
+        groups.filter { group -> group.type == IconRendererGroupType.Mask }.groupBy { group -> group.id }
+            .forEach { (id, groups) ->
+                result.add("<mask id=\"$id\">")
+                result.add("  <rect width=\"100%\" height=\"100%\" fill=\"white\" />")
+                groups.map { group -> indentBy(group.lines, 1) }.forEach { lines ->
+                    result.addAll(lines.map { line ->
+                        line.replace(
+                            Regex("(style=\"[#:;\\-a-zA-Z0-9]+\"|(fill|stroke)=\"#?[a-zA-Z0-ß]+\")"),
+                            ""
+                        )
+                    })
+                }
+                result.add("</mask>")
+            }
         return result
     }
 
     private fun renderGroups(groups: ArrayList<IconRendererGroup>): List<String> {
         val result = ArrayList<String>()
         groups.filter { group -> group.type == IconRendererGroupType.Group }.forEach {
-            result.addAll(it.lines.map { line -> line.replace("[GroupTagName]", "g") })
+            result.addAll(it.lines)
         }
         return result
     }

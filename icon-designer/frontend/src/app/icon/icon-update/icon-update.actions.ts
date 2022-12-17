@@ -12,3 +12,11 @@ export class IconUpdateSavedAction {
   static readonly type = '[IconUpdate] saved';
   constructor(public entity: IconDTO) {}
 }
+export class IconUpdateRenderAction {
+  static readonly type = '[IconUpdate] render';
+  constructor(public onRendered?: () => void) {}
+}
+export class IconUpdateRenderedAction {
+  static readonly type = '[IconUpdate] rendered';
+  constructor(public entity: IconDTO) {}
+}

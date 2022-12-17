@@ -9,7 +9,8 @@ import { IconLayer } from '../dto/icon-layer-dto';
 import { IconStack, IconStackDTO } from '../dto/icon-stack-dto';
 import { IconStackPosition } from '../icon-stack-position';
 import { IconService } from '../icon.service';
-import { IconUpdateSetAction } from './icon-update.actions';
+import { IconUpdateRenderAction, IconUpdateSetAction } from './icon-update.actions';
+import { IconUpdateState } from './icon-update.state';
 
 @Component({
   selector: 'app-icon-update',
@@ -19,6 +20,9 @@ import { IconUpdateSetAction } from './icon-update.actions';
 export class IconUpdateComponent {
   @Select(VectorGraphicsState.vectorGraphics)
   vectorGraphics$!: Observable<VectorGraphicDTO[] | undefined>;
+
+  @Select(IconUpdateState.icon)
+  icon$!: Observable<IconDTO | undefined>;
 
   @Input()
   iconDTO?: IconDTO = {
@@ -74,8 +78,19 @@ export class IconUpdateComponent {
     if (this.currentIconLayer) {
       this.currentIconLayer.vectorGraphic = vectorGraphic;
     }
-    this.iconService.renderStack(this.currentStack).subscribe((response) => {
-      this.currentStack.image = response;
-    });
+    // this.iconService.renderStack(this.currentStack).subscribe((response) => {
+    //   this.currentStack.image = response;
+    // });
+    this.rerenderIcon();
+  }
+
+  private rerenderIcon() {
+    this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
+    this.store.dispatch(
+      new IconUpdateRenderAction(() => {
+        this.iconDTO = this.store.selectSnapshot(IconUpdateState.icon);
+        this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
+      })
+    );
   }
 }

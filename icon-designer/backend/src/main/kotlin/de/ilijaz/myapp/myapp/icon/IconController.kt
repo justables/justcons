@@ -1,7 +1,6 @@
 package de.ilijaz.myapp.myapp.icon
 
 import de.ilijaz.myapp.myapp.icon.dto.IconDTO
-import de.ilijaz.myapp.myapp.icon.dto.IconStackDTO
 import org.springframework.web.bind.annotation.*
 
 
@@ -13,7 +12,7 @@ class IconController(
     @GetMapping("/icon")
     fun getAll(): Iterable<IconDTO> = iconService.findAll()
 
-    @PostMapping("/icon/render-stack")
-    fun renderStack(@RequestBody iconStack: IconStackDTO): ByteArray = iconService.renderStack(iconStack)
+    @PostMapping("/icon/render")
+    fun render(@RequestBody icon: IconDTO): IconDTO = iconService.render(icon)
 
 }

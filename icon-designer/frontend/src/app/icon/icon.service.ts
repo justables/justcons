@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 
 import { BASE_URL } from '../config';
 import { IconDTO } from './dto/icon-dto';
-import { IconStackDTO } from './dto/icon-stack-dto';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +19,7 @@ export class IconService {
     return this.http.get<IconDTO[]>(`${BASE_URL}/icon`)
   }
 
-  renderStack(iconStack: IconStackDTO): Observable<string> {
-    return this.http.post<string>(`${BASE_URL}/icon/render-stack`, iconStack)
+  render(icon: IconDTO): Observable<IconDTO> {
+    return this.http.post<IconDTO>(`${BASE_URL}/icon/render`, icon)
   }
 }
