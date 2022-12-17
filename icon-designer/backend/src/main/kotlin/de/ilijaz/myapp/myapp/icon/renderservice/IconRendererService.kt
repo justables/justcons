@@ -5,6 +5,7 @@ import de.ilijaz.myapp.myapp.icon.domain.IconStack
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphic
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.math.sin
 
 @Service
 class IconRendererService {
@@ -17,7 +18,7 @@ class IconRendererService {
     fun render(icon: Icon, dimensions: Int): String {
         val result = ArrayList<String>()
         val groups = ArrayList<IconRendererGroup>()
-        icon.iconStack.map { renderStack(it, groups) }
+        icon.iconStack.map { renderStack(it, groups, dimensions) }
         result.add("<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.0\" width=\"$dimensions\" height=\"$dimensions\" viewBox=\"0 0 $dimensions $dimensions\">")
         result.add("  <defs>")
         result.addAll(indentBy(renderDefs(groups), 3))
@@ -27,9 +28,10 @@ class IconRendererService {
         return result.joinToString("\n")
     }
 
-    private fun renderStack(iconStack: IconStack, groups: ArrayList<IconRendererGroup>) {
+    private fun renderStack(iconStack: IconStack, groups: ArrayList<IconRendererGroup>, dimensions: Int) {
         var groupType = IconRendererGroupType.Group
         var lastGroupType = IconRendererGroupType.Group
+        var lastVectorGraphic: VectorGraphic? = null
         var id = UUID.randomUUID().toString()
         iconStack.iconLayer.forEach { iconLayer ->
             val vectorGraphic: VectorGraphic = iconLayer.vectorGraphic ?: return
@@ -38,11 +40,19 @@ class IconRendererService {
                 id = UUID.randomUUID().toString()
                 attributes += " mask=\"url(#$id)\""
             }
+            if (lastVectorGraphic != null) {
+                val offset = Math.sqrt(2.0) * dimensions * 3 / 8
+                val rotation = lastVectorGraphic!!.rotation
+                val translationX =
+                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 45)) * dimensions * 3 / 4 + offset
+
+                val translationY =
+                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 135)) * dimensions * 3 / 4 + offset
+                attributes += " transform=\"translate($translationX, $translationY) scale(${lastVectorGraphic!!.scale}) rotate($rotation)\""
+            }
             groups.add(
                 IconRendererGroup(
-                    id = id,
-                    lastGroupType,
-                    listOf("<g$attributes>", "  " + vectorGraphic.paths, "</g>")
+                    id = id, lastGroupType, listOf("<g$attributes>", "  " + vectorGraphic.paths, "</g>")
                 )
             )
             if (vectorGraphic.mask) {
@@ -50,6 +60,7 @@ class IconRendererService {
                     if (groupType == IconRendererGroupType.Group) IconRendererGroupType.Mask else IconRendererGroupType.Group
             }
             lastGroupType = groupType
+            lastVectorGraphic = vectorGraphic
         }
     }
 
@@ -68,8 +79,7 @@ class IconRendererService {
                 groups.map { group -> indentBy(group.lines, 1) }.forEach { lines ->
                     result.addAll(lines.map { line ->
                         line.replace(
-                            Regex("(style=\"[#:;\\-a-zA-Z0-9]+\"|(fill|stroke)=\"#?[a-zA-Z0-ß]+\")"),
-                            ""
+                            Regex("(style=\"[#:;\\-a-zA-Z0-9]+\"|(fill|stroke)=\"#?[a-zA-Z0-ß]+\")"), ""
                         )
                     })
                 }
