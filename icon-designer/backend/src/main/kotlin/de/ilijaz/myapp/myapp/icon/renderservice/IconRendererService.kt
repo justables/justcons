@@ -33,25 +33,48 @@ class IconRendererService {
         var lastGroupType = IconRendererGroupType.Group
         var lastVectorGraphic: VectorGraphic? = null
         var id = UUID.randomUUID().toString()
-        iconStack.iconLayer.forEach { iconLayer ->
-            val vectorGraphic: VectorGraphic = iconLayer.vectorGraphic ?: return
+        var lastRotation = 0.0f
+        var lastScale = 1.0f
+        var lastTranslationX = 0.0
+        var lastTranslationY = 0.0
+        val filteredIconStack = iconStack.iconLayer.filter { iconLayer -> iconLayer.vectorGraphic != null }
+        filteredIconStack.forEachIndexed { index, iconLayer ->
+            val hasNext = index < filteredIconStack.size - 1
+            val vectorGraphic: VectorGraphic = iconLayer.vectorGraphic!!
             var attributes = ""
-            if (lastVectorGraphic != null) {
-                val offset = Math.sqrt(2.0) * dimensions * 3 / 8
-                val rotation = lastVectorGraphic!!.rotation
-                val scale = lastVectorGraphic!!.scale
-                val scaleOffset = (1 - scale) * (dimensions / 2)
-                val translationX =
-                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 45)) * dimensions * 3 / 4 + offset + scaleOffset
 
-                val translationY =
+            if (lastVectorGraphic != null) {
+                var rotation = lastVectorGraphic!!.rotation
+                var scale = lastVectorGraphic!!.scale
+                var scaleOffset = (1 - scale) * dimensions / 2
+                if (!lastGroupType.defs) {
+                    rotation += lastRotation
+                    scale *= lastScale
+                    scaleOffset = (1 - scale) * dimensions / 2
+                }
+                val offset = Math.sqrt(2.0) * dimensions * 3 / 8
+                var translationX =
+                    lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 45)) * dimensions * 3 / 4 + offset + scaleOffset
+                var translationY =
                     lastVectorGraphic!!.translationX + sin(Math.toRadians(rotation.toDouble() - 135)) * dimensions * 3 / 4 + offset + scaleOffset
+                if (lastGroupType.defs) {
+                    translationX += lastTranslationX
+                    translationY += lastTranslationY
+                }
+
                 attributes += " transform=\"translate($translationX, $translationY) scale($scale) rotate($rotation)\""
+
+                lastRotation = rotation
+                lastScale = scale
+                lastTranslationX = translationX
+                lastTranslationY = translationY
             }
-            if (vectorGraphic.mask) {
+
+            if (vectorGraphic.mask && hasNext && groupType == IconRendererGroupType.Group) {
                 id = UUID.randomUUID().toString()
                 attributes += " mask=\"url(#$id)\""
             }
+
             groups.add(
                 IconRendererGroup(
                     id = id, lastGroupType, listOf("<g$attributes>", "  " + vectorGraphic.paths, "</g>")
