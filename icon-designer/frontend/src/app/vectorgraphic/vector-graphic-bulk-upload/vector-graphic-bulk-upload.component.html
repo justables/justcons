@@ -1,7 +1,7 @@
-<div class="flex flex-col gap-4 h-full p-4">
-  <div class="panel">
-    <div class="flex flex-col gap-2">
-      <h3 class="font-bold text-lg">Upload svgs</h3>
+<div class="panels">
+  <div class="panel flex gap-4">
+    <div class="form-control">
+      <span class="label">Upload svg</span>
 
       <input
         type="file"
@@ -11,45 +11,49 @@
         (change)="onFileChanged($event)"
       />
     </div>
+
+    <div class="form-control">
+      <span class="label">Primary color</span>
+      <input class="input" type="text" />
+    </div>
+
+    <div class="form-control">
+      <span class="label">Secondary color</span>
+      <input class="input" type="text" />
+    </div>
+
+    <div class="flex-1"></div>
+
+    <button class="btn btn-ghost" (click)="onRerender()">Rerender</button>
+    <button class="btn btn-ghost" (click)="onDiscard()">Discard</button>
+    <ng-container *ngIf="loadingState$ | async as loadingState">
+      <button
+        [ngClass]="[
+          'btn',
+          'btn-primary',
+          loadingState === 'loading' ? 'loading' : ''
+        ]"
+        (click)="onSave()"
+        [disabled]="!form.valid"
+      >
+        Save
+      </button>
+    </ng-container>
   </div>
 
   <div class="panel h-full">
     <h3 class="font-bold text-lg">Preview</h3>
-    <div class="flex flex-wrap justify-center gap-2">
+    <div class="vector-preview-grid">
       <ng-container *ngFor="let vectorGraphic of vectorGraphics">
-        <div
-          class="icon-box relative flex flex-col justify-center gap-2 p-2 text-center cursor-pointer"
-        >
-          <div class="p-4 bg-base-200 rounded-xl">
+        <div class="vector-preview cursor-pointer">
+          <div>
             <app-base64-image [img]="vectorGraphic.image"></app-base64-image>
           </div>
-          <span
-            class="w-24 text-xs text-center overflow-hidden overflow-ellipsis whitespace-nowrap"
-            >{{ vectorGraphic.name }}</span
-          >
-          <div class="overlay absolute top-0 right-0 hidden gap-2 m-3">
+          <span>{{ vectorGraphic.name }}</span>
+          <div class="vector-preview-overlay">
             <div class="btn btn-sm" (click)="removeIcon(vectorGraphic)">D</div>
           </div>
         </div>
-      </ng-container>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="flex justify-end gap-2">
-      <button class="btn btn-ghost" (click)="onDiscard()">Discard</button>
-      <ng-container *ngIf="loadingState$ | async as loadingState">
-        <button
-          [ngClass]="[
-            'btn',
-            'btn-primary',
-            loadingState === 'loading' ? 'loading' : ''
-          ]"
-          (click)="onSave()"
-          [disabled]="!form.valid"
-        >
-          Save
-        </button>
       </ng-container>
     </div>
   </div>

@@ -9,12 +9,69 @@ import java.util.stream.IntStream
 import kotlin.io.path.Path
 import kotlin.io.path.writeText
 
+
 @Service
 class SvgToPathConverterService {
 
-    fun convert(svg: String): SvgToPathConverterResultDTO = SvgToPathConverterResultDTO(
-        convertSvgToPath(svg), getDimensions(svg), SvgToPngConverter.svgToPng(convertSvgToSvgPath(svg))
-    )
+    fun convert(svgConverterDTO: SvgToPathConverterRequestDTO): SvgToPathConverterResultDTO {
+        val svg = handleColors(svgConverterDTO)
+        return SvgToPathConverterResultDTO(
+            convertSvgToPath(svg),
+            getDimensions(svg),
+            SvgToPngConverter.svgToPng(convertSvgToSvgPath(svg))
+        )
+    }
+
+    private fun handleColors(svgConverterDTO: SvgToPathConverterRequestDTO): String {
+        fun handleColors_(node: Node) {
+            if (node !is Element) {
+                return
+            }
+            if (node.tagName == "defs" || node.tagName == "mask") {
+                return
+            }
+            fun handleAttribute(attributeName: String): Boolean {
+                if (node.getAttribute(attributeName) == "white") {
+                    node.setAttribute(attributeName, "#ffffff")
+                } else
+                    if (node.getAttribute(attributeName) == "black") {
+                        node.setAttribute(attributeName, "#000000")
+                    }
+                if (node.getAttribute(attributeName) != "" && node.getAttribute(attributeName) != "#${svgConverterDTO.primaryColor}" && node.getAttribute(
+                        attributeName
+                    ) != "#${svgConverterDTO.secondaryColor}"
+                ) {
+                    return true
+                }
+                if (node.getAttribute(attributeName) == "#${svgConverterDTO.primaryColor}") {
+                    node.setAttribute(attributeName, "#ffffff")
+                }
+                if (node.getAttribute(attributeName) == "#${svgConverterDTO.secondaryColor}") {
+                    node.setAttribute(attributeName, "#dce2e6")
+                }
+                return false
+            }
+            for (attribute in listOf<String>("fill", "stroke")) {
+                if (handleAttribute(attribute)) {
+                    node.parentNode.removeChild(node)
+                    return
+                }
+            }
+            XmlUtil.children(node).forEach {
+                if (it != null) {
+                    handleColors_(it)
+                }
+            }
+        }
+
+        val xml = XmlUtil.stringToXml(svgConverterDTO.svg)
+        XmlUtil.children(xml.documentElement).forEach {
+            if (it != null) {
+                handleColors_(it)
+            }
+        }
+        return XmlUtil.nodeToString(xml.documentElement)
+    }
 
     fun convertSvgToPath(svg: String): String {
         val document = XmlUtil.stringToXml(convertSvgToSvgPath(svg))

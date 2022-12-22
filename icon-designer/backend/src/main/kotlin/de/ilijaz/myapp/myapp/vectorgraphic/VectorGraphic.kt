@@ -1,6 +1,6 @@
 package de.ilijaz.myapp.myapp.vectorgraphic
 
-import de.ilijaz.myapp.myapp.icon.renderservice.IconRendererService
+import de.ilijaz.myapp.myapp.icon.renderer.IconRendererService
 import java.util.*
 import javax.persistence.Column
 import javax.persistence.Entity

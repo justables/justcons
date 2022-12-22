@@ -3,10 +3,8 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
 import { handleError } from 'src/core/handle-error';
 import { SvgToPathConverterService } from '../svg/svg-to-path-converter.service';
-import { defaultRemoteAsset, RemoteAsset } from './../../core/remote-asset';
+import { defaultRemoteAsset } from './../../core/remote-asset';
 import {
-  VectorGraphicConvertAction,
-  VectorGraphicConvertedAction,
   VectorGraphicsDeleteAction,
   VectorGraphicsDeletedAction,
   VectorGraphicsLoadAction,
@@ -120,32 +118,6 @@ export class VectorGraphicsState {
         response: state.response?.filter(
           (vectorGrahic) => response.filter((res) => res.id === vectorGrahic.id).length === 0
         ),
-      })
-    );
-  }
-  @Action(VectorGraphicConvertAction)
-  convert(context: StateContext<VectorGraphicsEntity>, { request, onConverted }: VectorGraphicConvertAction) {
-    context.setState(
-      patch<VectorGraphicsEntity>({
-        loadingState: 'loading',
-      })
-    );
-    this.svgToPathConverterService.svgToPath(request).subscribe({
-      next: (response) => {
-        context.dispatch(new VectorGraphicConvertedAction(response));
-        if (onConverted) {
-          onConverted();
-        }
-      },
-      error: (error) => handleError({ context, error }),
-    });
-  }
-  @Action(VectorGraphicConvertedAction)
-  converted(context: StateContext<VectorGraphicsEntity>, { response }: VectorGraphicConvertedAction) {
-    context.setState(
-      patch<VectorGraphicsEntity>({
-        loadingState: 'loaded',
-        preview: response,
       })
     );
   }

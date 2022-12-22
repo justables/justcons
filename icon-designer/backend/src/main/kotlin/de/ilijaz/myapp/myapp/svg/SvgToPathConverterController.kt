@@ -11,5 +11,6 @@ class SvgToPathConverterController(
     private val svgToPathConverterService: SvgToPathConverterService,
 ) {
     @PostMapping("/svg-to-path")
-    fun svgToPath(@RequestBody svg: String): SvgToPathConverterResultDTO = svgToPathConverterService.convert(svg)
+    fun svgToPath(@RequestBody svgConverterDTO: SvgToPathConverterRequestDTO): SvgToPathConverterResultDTO =
+        svgToPathConverterService.convert(svgConverterDTO)
 }

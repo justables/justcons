@@ -11,5 +11,6 @@ import javax.persistence.Table
 data class Icon(
     @Id val id: UUID,
     val name: String,
+    val dimensions: Int = 24,
     @OneToMany(mappedBy = "icon") val iconStack: List<IconStack>,
 )

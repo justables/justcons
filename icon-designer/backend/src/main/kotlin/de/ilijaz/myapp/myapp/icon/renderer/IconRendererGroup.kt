@@ -1,7 +1,6 @@
-package de.ilijaz.myapp.myapp.icon.renderservice
+package de.ilijaz.myapp.myapp.icon.renderer
 
 data class IconRendererGroup(
-    val id: String,
     val type: IconRendererGroupType,
     val lines: List<String>,
 )

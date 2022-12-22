@@ -3,7 +3,11 @@
 }
 
 .panel {
-  @apply m-2 p-4 bg-base-100 rounded-lg shadow-md overflow-scroll;
+  @apply m-2 p-4 bg-base-100 rounded-lg shadow-md dark:shadow-none;
+}
+
+.panel.h-full {
+  @apply overflow-scroll;
 }
 
 .panels .row {
@@ -16,4 +20,32 @@
 
 .panel .title {
   @apply text-lg;
+}
+
+.vector-preview-grid {
+  @apply flex flex-wrap justify-center gap-2;
+}
+
+.vector-preview {
+  @apply relative flex flex-col justify-center gap-2 p-2 text-center;
+}
+
+.vector-preview > *:nth-child(1) {
+  @apply p-8 bg-base-200 rounded-xl;
+}
+
+.vector-preview > *:nth-child(1) img {
+  @apply w-12 h-12;
+}
+
+.vector-preview > *:nth-child(2) {
+  @apply w-24 text-xs text-center overflow-hidden overflow-ellipsis whitespace-nowrap;
+}
+
+.vector-preview .vector-preview-overlay {
+  @apply absolute top-0 right-0 hidden gap-2 m-3;
+}
+
+.vector-preview:hover .vector-preview-overlay {
+  @apply flex;
 }

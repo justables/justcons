@@ -9,6 +9,9 @@ import { LoadingState } from 'src/core/loading-state';
 import { VectorGraphicsSaveAction } from '../vector-graphic.actions';
 import { VectorGraphicsState } from '../vector-graphic.state';
 
+const defaultPrimaryColor = 'ffffff';
+const defaultSecondaryColor = 'aaaaaa';
+
 @Component({
   selector: 'app-vector-graphic-bulk-upload',
   templateUrl: './vector-graphic-bulk-upload.component.html',
@@ -18,10 +21,12 @@ export class VectorGraphicBulkUploadComponent {
   @Select(VectorGraphicsState.loadingState)
   loadingState$!: Observable<LoadingState>;
 
-  vectorGraphics: (SvgToPathConverterResultDTO & { name: string })[] = [];
+  vectorGraphics: (SvgToPathConverterResultDTO & { name: string; svg: string })[] = [];
 
   form!: FormGroup;
   svgFileFormControl = new FormControl();
+  primaryColorFormControl = new FormControl(defaultPrimaryColor);
+  secondaryColorFormControl = new FormControl(defaultSecondaryColor);
 
   constructor(
     private store: Store,
@@ -40,13 +45,35 @@ export class VectorGraphicBulkUploadComponent {
       reader.readAsText(file, 'UTF-8');
       reader.onload = (evt: any) => {
         const svg = evt.target.result;
-        this.svgToPathConverterService.svgToPath(svg).subscribe((response) => {
-          this.vectorGraphics.push({ ...response, name: file.name });
-        });
+        this.svgToPathConverterService
+          .svgToPath({
+            svg: svg,
+            primaryColor: this.primaryColorFormControl.value ?? defaultPrimaryColor,
+            secondaryColor: this.secondaryColorFormControl.value ?? defaultSecondaryColor,
+          })
+          .subscribe((response) => {
+            this.vectorGraphics.push({ ...response, name: file.name, svg });
+          });
       };
       reader.onerror = (evt: any) => {
         throw new Error(evt.target.result);
       };
+    });
+  }
+
+  onRerender() {
+    const vectorGraphics = [...this.vectorGraphics];
+    this.vectorGraphics = [];
+    vectorGraphics.forEach((vectorGraphic) => {
+      this.svgToPathConverterService
+        .svgToPath({
+          svg: vectorGraphic.svg,
+          primaryColor: this.primaryColorFormControl.value ?? defaultPrimaryColor,
+          secondaryColor: this.secondaryColorFormControl.value ?? defaultSecondaryColor,
+        })
+        .subscribe((response) => {
+          this.vectorGraphics.push({ ...response, name: vectorGraphic.name, svg: vectorGraphic.svg });
+        });
     });
   }
 
@@ -81,6 +108,8 @@ export class VectorGraphicBulkUploadComponent {
   private initForm() {
     this.form = this.formBuilder.group({
       svgFile: this.svgFileFormControl,
+      primaryColor: this.primaryColorFormControl,
+      secondaryColor: this.secondaryColorFormControl,
     });
   }
 

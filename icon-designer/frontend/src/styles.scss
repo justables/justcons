@@ -5,7 +5,7 @@
 @import "style/panel.scss";
 
 body {
-  @apply h-screen bg-gray-300;
+  @apply h-screen bg-gray-300 dark:bg-gray-900;
 }
 
 .btn {

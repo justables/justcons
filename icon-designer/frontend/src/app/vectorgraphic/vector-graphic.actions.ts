@@ -25,14 +25,6 @@ export class VectorGraphicsDeletedAction {
   static readonly type = '[VectorGraphics] deleted';
   constructor(public response: VectorGraphicDTO[]) {}
 }
-export class VectorGraphicConvertAction {
-  static readonly type = '[VectorGraphics] convert';
-  constructor(public request: string, public onConverted?: () => void) {}
-}
-export class VectorGraphicConvertedAction {
-  static readonly type = '[VectorGraphics] converted';
-  constructor(public response: SvgToPathConverterResultDTO) {}
-}
 export class VectorGraphicsSelectAction {
   static readonly type = '[VectorGraphics] select';
   constructor(public selected?: VectorGraphicDTO) {}

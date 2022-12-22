@@ -7,7 +7,7 @@ import de.ilijaz.myapp.myapp.icon.domain.IconStack
 import de.ilijaz.myapp.myapp.icon.dto.IconDTO
 import de.ilijaz.myapp.myapp.icon.dto.IconLayerDTO
 import de.ilijaz.myapp.myapp.icon.dto.IconStackDTO
-import de.ilijaz.myapp.myapp.icon.renderservice.IconRendererService
+import de.ilijaz.myapp.myapp.icon.renderer.IconRendererService
 import de.ilijaz.myapp.myapp.svg.SvgToPngConverter
 import de.ilijaz.myapp.myapp.vectorgraphic.VectorGraphicMapper
 import org.springframework.stereotype.Component
@@ -21,12 +21,12 @@ class IconMapper(
     override fun toDTO(entity: Icon): IconDTO = IconDTO(
         id = entity.id,
         name = entity.name,
-        image = SvgToPngConverter.svgToPng(iconRenderService.render(entity, 32)),
+        image = SvgToPngConverter.svgToPng(iconRenderService.render(entity)),
         iconStack = entity.iconStack.map { iconStack ->
             IconStackDTO(
                 id = iconStack.id,
                 position = iconStack.position,
-                image = SvgToPngConverter.svgToPng(iconRenderService.render(getIconFromIconStack(iconStack), 32)),
+                image = SvgToPngConverter.svgToPng(iconRenderService.render(getIconFromIconStack(iconStack))),
                 iconLayer = iconStack.iconLayer.map { iconLayer ->
                     IconLayerDTO(
                         id = iconLayer.id,

@@ -5,6 +5,8 @@ import org.w3c.dom.Node
 import org.w3c.dom.ls.DOMImplementationLS
 import org.xml.sax.InputSource
 import java.io.StringReader
+import java.util.stream.IntStream
+import java.util.stream.Stream
 import javax.xml.parsers.DocumentBuilderFactory
 
 
@@ -24,5 +26,8 @@ class XmlUtil {
             )
             return serializer.writeToString(node)
         }
+
+        fun children(node: Node): Stream<Node> =
+            IntStream.range(0, node.childNodes.length).mapToObj(node.childNodes::item)
     }
 }

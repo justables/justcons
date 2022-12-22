@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styles: [
     `
       img {
-        filter: invert(1);
+        @apply invert dark:invert-0;
       }
     `,
   ],
