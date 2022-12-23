@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { VectorGraphicDTO } from 'src/app/vectorgraphic/vector-graphic-dto';
@@ -9,7 +10,7 @@ import { IconLayer } from '../dto/icon-layer-dto';
 import { IconStack, IconStackDTO } from '../dto/icon-stack-dto';
 import { IconStackPosition } from '../icon-stack-position';
 import { IconService } from '../icon.service';
-import { IconUpdateRenderAction, IconUpdateSetAction } from './icon-update.actions';
+import { IconUpdateRenderAction, IconUpdateSaveAction, IconUpdateSetAction } from './icon-update.actions';
 import { IconUpdateState } from './icon-update.state';
 
 @Component({
@@ -49,7 +50,7 @@ export class IconUpdateComponent {
 
   currentIconLayer: IconLayer | undefined;
 
-  constructor(private store: Store, private iconService: IconService) {}
+  constructor(private store: Store, private router: Router) {}
 
   ngOnInit() {
     this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
@@ -82,6 +83,22 @@ export class IconUpdateComponent {
     //   this.currentStack.image = response;
     // });
     this.rerenderIcon();
+  }
+
+  onSave() {
+    this.store.dispatch(
+      new IconUpdateSaveAction(() => {
+        this.navigateBack();
+      })
+    );
+  }
+
+  onDiscard() {
+    this.navigateBack();
+  }
+
+  private navigateBack() {
+    this.router.navigate(['/icons']);
   }
 
   private rerenderIcon() {

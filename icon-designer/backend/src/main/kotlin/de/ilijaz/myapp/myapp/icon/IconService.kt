@@ -1,12 +1,19 @@
 package de.ilijaz.myapp.myapp.icon
 
 import de.ilijaz.myapp.myapp.icon.dto.IconDTO
+import de.ilijaz.myapp.myapp.icon.repository.IconLayerRepository
+import de.ilijaz.myapp.myapp.icon.repository.IconRepository
+import de.ilijaz.myapp.myapp.icon.repository.IconStackRepository
 import org.springframework.stereotype.Service
+import javax.persistence.EntityManager
 
 @Service
 class IconService(
     private val iconRepository: IconRepository,
+    private val iconStackRepository: IconStackRepository,
+    private val iconLayerRepository: IconLayerRepository,
     private val iconMapper: IconMapper,
+    private val entityManager: EntityManager,
 ) {
     fun findAll(): Iterable<IconDTO> = iconMapper.toDTO(iconRepository.findAll())
 
@@ -15,11 +22,15 @@ class IconService(
         return if (icon != null) iconMapper.toDTO(icon) else null
     }
 
-    fun save(iconDTO: IconDTO): IconDTO =
-        iconMapper.toDTO(iconRepository.save(iconMapper.fromDTO(iconDTO)))
-
-    fun save(iconDTOs: List<IconDTO>): List<IconDTO> =
-        iconDTOs.map { save(it) }
+    fun save(iconDTO: IconDTO): IconDTO {
+        val icon = iconRepository.save(iconMapper.fromDTO(iconDTO))
+        icon.iconStacks.forEach { iconStack ->
+            iconStackRepository.save(iconStack).iconLayers.forEach { iconLayer ->
+                iconLayerRepository.save(iconLayer)
+            }
+        }
+        return iconMapper.toDTO(icon)
+    }
 
     fun delete(iconDTO: IconDTO) {
         if (iconDTO.id == null) {

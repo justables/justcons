@@ -7,13 +7,13 @@ class IconStackRenderer(
     private val dimensions: Int,
 ) {
     fun render(): IconGroupsAndDefs {
-        if (iconStack.iconLayer.isEmpty()) {
+        if (iconStack.iconLayers.isEmpty()) {
             return IconGroupsAndDefs(emptyList(), emptyList())
         }
         return IconLayerRenderer(
-            iconStack.iconLayer.first(),
+            iconStack.iconLayers.first(),
             dimensions,
-            iconStack.iconLayer.toMutableList().let { it.remove(it.first()); it },
+            iconStack.iconLayers.toMutableList().let { it.remove(it.first()); it },
         ).render()
     }
 }

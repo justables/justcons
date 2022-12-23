@@ -22,12 +22,12 @@ class IconMapper(
         id = entity.id,
         name = entity.name,
         image = SvgToPngConverter.svgToPng(iconRenderService.render(entity)),
-        iconStack = entity.iconStack.map { iconStack ->
+        iconStack = entity.iconStacks.map { iconStack ->
             IconStackDTO(
                 id = iconStack.id,
                 position = iconStack.position,
                 image = SvgToPngConverter.svgToPng(iconRenderService.render(getIconFromIconStack(iconStack))),
-                iconLayer = iconStack.iconLayer.map { iconLayer ->
+                iconLayer = iconStack.iconLayers.map { iconLayer ->
                     IconLayerDTO(
                         id = iconLayer.id,
                         vectorGraphic = iconLayer.vectorGraphic?.let { vectorGraphicMapper.toDTO(it) },
@@ -38,27 +38,37 @@ class IconMapper(
         }
     )
 
-    override fun fromDTO(dto: IconDTO): Icon = Icon(
-        id = dto.id ?: UUID.randomUUID(),
-        name = dto.name,
-        iconStack = dto.iconStack.map { iconStack ->
-            IconStack(
-                id = iconStack.id ?: UUID.randomUUID(),
+    override fun fromDTO(dto: IconDTO): Icon {
+        val iconStacks = mutableListOf<IconStack>()
+        val icon = Icon(
+            id = dto.id,
+            name = dto.name,
+            iconStacks = iconStacks
+        )
+        iconStacks.addAll(dto.iconStack.map { iconStack ->
+            val iconLayer = mutableListOf<IconLayer>()
+            val iconStackResult = IconStack(
+                id = iconStack.id,
                 position = iconStack.position,
-                iconLayer = iconStack.iconLayer.map { iconLayer ->
-                    IconLayer(
-                        id = iconLayer.id ?: UUID.randomUUID(),
-                        vectorGraphic = iconLayer.vectorGraphic?.let { vectorGraphicMapper.fromDTO(it) },
-                        sortPosition = iconLayer.sortPosition,
-                    )
-                }
+                iconLayers = iconLayer,
+                icon = icon,
             )
-        }
-    )
+            iconLayer.addAll(iconStack.iconLayer.map { iconLayer1 ->
+                IconLayer(
+                    id = iconLayer1.id,
+                    vectorGraphic = iconLayer1.vectorGraphic?.let { vectorGraphicMapper.fromDTO(it) },
+                    sortPosition = iconLayer1.sortPosition,
+                    iconStack = iconStackResult,
+                )
+            })
+            iconStackResult
+        })
+        return icon
+    }
 
     private fun getIconFromIconStack(iconStack: IconStack) = Icon(
         id = UUID.randomUUID(),
         name = "tmp",
-        iconStack = listOf(iconStack)
+        iconStacks = listOf(iconStack)
     )
 }

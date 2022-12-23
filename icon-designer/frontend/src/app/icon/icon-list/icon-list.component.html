@@ -1,3 +1,11 @@
-<ng-container *ngIf="icons$ | async as icons">
-  <p *ngFor="let icon of icons">{{ icon.name }}</p>
-</ng-container>
+<div class="vector-preview-grid" *ngIf="icons$ | async as icons">
+  <ng-container *ngFor="let icon of icons">
+    <div class="vector-preview cursor-pointer">
+      <div>
+        <app-base64-image [img]="icon.image ?? ''"></app-base64-image>
+      </div>
+      <span>{{ icon.name }}</span>
+      <div class="vector-preview-overlay"></div>
+    </div>
+  </ng-container>
+</div>

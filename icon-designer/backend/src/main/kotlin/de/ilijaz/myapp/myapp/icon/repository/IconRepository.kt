@@ -1,4 +1,4 @@
-package de.ilijaz.myapp.myapp.icon
+package de.ilijaz.myapp.myapp.icon.repository
 
 import de.ilijaz.myapp.myapp.icon.domain.Icon
 import org.springframework.data.jpa.repository.Query

@@ -15,4 +15,11 @@ class IconController(
     @PostMapping("/icon/render")
     fun render(@RequestBody icon: IconDTO): IconDTO = iconService.render(icon)
 
+    @PostMapping("/icon")
+    fun save(@RequestBody icon: IconDTO): IconDTO = iconService.save(icon)
+
+    @PostMapping("/icon/delete")
+    fun delete(@RequestBody icon: IconDTO) = iconService.delete(icon)
+
+
 }

@@ -35,16 +35,20 @@ export class IconUpdateState {
   }
   @Action(IconUpdateSaveAction)
   save(context: StateContext<IconUpdateEntity>, { onSaved }: IconUpdateSaveAction) {
+    const icon = context.getState().icon;
+    if (icon === undefined) {
+      throw new Error('Attempt to save an undefined icon');
+    }
     context.setState(patch<IconUpdateEntity>({ loadingState: 'loading' }));
-    // this.iconService.save(context.getState().icon).subscribe({
-    //   next: (response) => {
-    //     context.dispatch(new IconUpdateSavedAction(response));
-    //     if (onSaved) {
-    //       onSaved();
-    //     }
-    //   },
-    //   error: (error) => handleError({ context, error }),
-    // });
+    this.iconService.save(icon).subscribe({
+      next: (response) => {
+        context.dispatch(new IconUpdateSavedAction(response));
+        if (onSaved) {
+          onSaved();
+        }
+      },
+      error: (error) => handleError({ context, error }),
+    });
   }
 
   @Action(IconUpdateSavedAction)

@@ -80,15 +80,15 @@ class IconLayerRenderer(
 
     private fun calculateRotationTransform(rotation: Double): String {
         val offset = sqrt(2.0) * dimensions * 3 / 8
-        var translationX =
+        val translationX =
             sin(Math.toRadians(rotation - 45)) * dimensions * 3 / 4 + offset
-        var translationY =
+        val translationY =
             sin(Math.toRadians(rotation - 135)) * dimensions * 3 / 4 + offset
         return "translate($translationX $translationY)"
     }
 
     private fun calculateScaleTransform(scale: Float): String {
-        var scaleOffset = (dimensions * (1 - scale)) / 2
+        val scaleOffset = (dimensions * (1 - scale)) / 2
         return "translate($scaleOffset $scaleOffset)"
     }
 

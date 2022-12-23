@@ -27,7 +27,7 @@
 }
 
 .vector-preview {
-  @apply relative flex flex-col justify-center gap-2 p-2 text-center;
+  @apply relative flex flex-col items-center gap-2 p-2 text-center;
 }
 
 .vector-preview > *:nth-child(1) {
