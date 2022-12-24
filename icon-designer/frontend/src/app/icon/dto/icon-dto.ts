@@ -2,20 +2,23 @@
 
 import { IconStackDTO } from './/icon-stack-dto';
 export interface IconDTO {
-  iconStack: IconStackDTO[];
+  dimensions: number;
+  iconStacks: IconStackDTO[];
   id: string | undefined;
   image: string | undefined;
   name: string;
 }
 
 export class Icon {
-  iconStack: IconStackDTO[];
+  dimensions: number;
+  iconStacks: IconStackDTO[];
   id: string | undefined;
   image: string | undefined;
   name: string;
 
   constructor(data: IconDTO) {
-    this.iconStack = data.iconStack;
+    this.dimensions = data.dimensions;
+    this.iconStacks = data.iconStacks;
     this.id = data.id;
     this.image = data.image;
     this.name = data.name;

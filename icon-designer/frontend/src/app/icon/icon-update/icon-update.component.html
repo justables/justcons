@@ -3,95 +3,109 @@
     <div class="flex flex-col panel">
       <div class="title">Icon</div>
       <div class="preview flex justify-Center items-Center m-8 h-full">
-        <div *ngIf="icon$ | async as icon">
-          <div
-            [ngClass]="[
-              'icon-placeholder icon-placeholder-corner',
-              selectedIconStack === 'TopLeft' ? 'selected' : ''
-            ]"
-            (click)="selectedIconStack = 'TopLeft'"
-          >
-            <app-base64-image
-              classes="w-8 h-8"
-              [img]="getStackByPosition('TopLeft').image ?? ''"
-            ></app-base64-image>
-          </div>
-          <div
-            [ngClass]="[
-              'icon-placeholder icon-placeholder-corner',
-              selectedIconStack === 'BottomLeft' ? 'selected' : ''
-            ]"
-            (click)="selectedIconStack = 'BottomLeft'"
-          >
-            <app-base64-image
-              classes="w-8 h-8"
-              [img]="getStackByPosition('BottomLeft').image ?? ''"
-            ></app-base64-image>
-          </div>
-        </div>
-        <div
-          [ngClass]="[
-            'icon-placeholder',
-            selectedIconStack === 'Center' ? 'selected' : ''
-          ]"
-          (click)="selectedIconStack = 'Center'"
+        <ng-container
+          *ngIf="{ value: selectedStack$ | async } as selectedStack"
         >
-          <app-base64-image
-            [img]="getStackByPosition('Center').image ?? ''"
-          ></app-base64-image>
-        </div>
-        <div>
-          <div
-            [ngClass]="[
-              'icon-placeholder icon-placeholder-corner',
-              selectedIconStack === 'TopRight' ? 'selected' : ''
-            ]"
-            (click)="selectedIconStack = 'TopRight'"
-          >
-            <app-base64-image
-              classes="w-8 h-8"
-              [img]="getStackByPosition('TopRight').image ?? ''"
-            ></app-base64-image>
+          <div>
+            <div
+              [ngClass]="[
+                'icon-placeholder icon-placeholder-corner',
+                selectedStack.value?.position === 'TopLeft' ? 'selected' : ''
+              ]"
+              (click)="onSelectStack('TopLeft')"
+              *ngIf="topLeftStack$ | async as iconStack"
+            >
+              <app-base64-image
+                classes="w-8 h-8"
+                [img]="iconStack.image ?? ''"
+              ></app-base64-image>
+            </div>
+            <div
+              [ngClass]="[
+                'icon-placeholder icon-placeholder-corner',
+                selectedStack.value?.position === 'BottomLeft' ? 'selected' : ''
+              ]"
+              (click)="onSelectStack('BottomLeft')"
+              *ngIf="bottomLeftStack$ | async as iconStack"
+            >
+              <app-base64-image
+                classes="w-8 h-8"
+                [img]="iconStack.image ?? ''"
+              ></app-base64-image>
+            </div>
           </div>
           <div
             [ngClass]="[
-              'icon-placeholder icon-placeholder-corner',
-              selectedIconStack === 'BottomRight' ? 'selected' : ''
+              'icon-placeholder',
+              selectedStack.value?.position === 'Center' ? 'selected' : ''
             ]"
-            (click)="selectedIconStack = 'BottomRight'"
+            (click)="onSelectStack('Center')"
+            *ngIf="centerStack$ | async as iconStack"
           >
-            <app-base64-image
-              classes="w-8 h-8"
-              [img]="getStackByPosition('BottomRight').image ?? ''"
-            ></app-base64-image>
+            <app-base64-image [img]="iconStack.image ?? ''"></app-base64-image>
           </div>
-        </div>
+          <div>
+            <div
+              [ngClass]="[
+                'icon-placeholder icon-placeholder-corner',
+                selectedStack.value?.position === 'TopRight' ? 'selected' : ''
+              ]"
+              (click)="onSelectStack('TopRight')"
+              *ngIf="topRightStack$ | async as iconStack"
+            >
+              <app-base64-image
+                classes="w-8 h-8"
+                [img]="iconStack.image ?? ''"
+              ></app-base64-image>
+            </div>
+            <div
+              [ngClass]="[
+                'icon-placeholder icon-placeholder-corner',
+                selectedStack.value?.position === 'BottomRight'
+                  ? 'selected'
+                  : ''
+              ]"
+              (click)="onSelectStack('BottomRight')"
+              *ngIf="bottomRightStack$ | async as iconStack"
+            >
+              <app-base64-image
+                classes="w-8 h-8"
+                [img]="iconStack.image ?? ''"
+              ></app-base64-image>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" *ngIf="selectedStack$ | async as selectedStack">
       <div class="title">Layer</div>
       <div class="flex flex-col gap-4 m-4">
-        <div
-          [ngClass]="[
-            'icon-layer flex gap-4 cursor-pointer',
-            currentIconLayer === iconLayer ? 'selected' : ''
-          ]"
-          (click)="
-            currentIconLayer =
-              currentIconLayer === iconLayer ? undefined : iconLayer
-          "
-          *ngFor="let iconLayer of currentStack.iconLayer"
+        <ng-container
+          *ngIf="{ value: selectedLayer$ | async } as selectedLayer"
         >
-          <div class="preview">
-            <app-base64-image
-              [img]="iconLayer.vectorGraphic?.image ?? ''"
-            ></app-base64-image>
-          </div>
-          <span>{{ iconLayer.vectorGraphic?.name }}</span>
-          <div class="flex-1"></div>
-          <div class="btn">D</div>
-          <div class="btn">E</div>
-        </div>
+          <ng-container *ngIf="iconLayers$ | async as iconLayers">
+            <div
+              [ngClass]="[
+                'icon-layer flex gap-4 cursor-pointer',
+                selectedLayer.value?.sortPosition === iconLayer.sortPosition
+                  ? 'selected'
+                  : ''
+              ]"
+              (click)="onSelectLayer(iconLayer)"
+              *ngFor="let iconLayer of iconLayers"
+            >
+              <div class="preview">
+                <app-base64-image
+                  [img]="iconLayer.vectorGraphic?.image ?? ''"
+                ></app-base64-image>
+              </div>
+              <span>{{ iconLayer.vectorGraphic?.name }}</span>
+              <div class="flex-1"></div>
+              <div class="btn" (click)="onRemoveLayer(iconLayer)">D</div>
+              <div class="btn">E</div>
+            </div>
+          </ng-container>
+        </ng-container>
         <div class="btn" (click)="onAddLayer()">+</div>
       </div>
     </div>
@@ -100,7 +114,7 @@
     <div class="title">Vector Graphic Selector</div>
     <div
       class="flex flex-wrap justify-center gap-2"
-      *ngIf="currentIconLayer !== undefined"
+      *ngIf="showVectorGraphics$ | async"
     >
       <ng-container *ngIf="vectorGraphics$ | async as vectorGraphics">
         <ng-container *ngFor="let vectorGraphic of vectorGraphics">

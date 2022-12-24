@@ -21,13 +21,14 @@ class IconMapper(
     override fun toDTO(entity: Icon): IconDTO = IconDTO(
         id = entity.id,
         name = entity.name,
+        dimensions = entity.dimensions,
         image = SvgToPngConverter.svgToPng(iconRenderService.render(entity)),
-        iconStack = entity.iconStacks.map { iconStack ->
+        iconStacks = entity.iconStacks.map { iconStack ->
             IconStackDTO(
                 id = iconStack.id,
                 position = iconStack.position,
                 image = SvgToPngConverter.svgToPng(iconRenderService.render(getIconFromIconStack(iconStack))),
-                iconLayer = iconStack.iconLayers.map { iconLayer ->
+                iconLayers = iconStack.iconLayers.map { iconLayer ->
                     IconLayerDTO(
                         id = iconLayer.id,
                         vectorGraphic = iconLayer.vectorGraphic?.let { vectorGraphicMapper.toDTO(it) },
@@ -43,9 +44,10 @@ class IconMapper(
         val icon = Icon(
             id = dto.id,
             name = dto.name,
+            dimensions = dto.dimensions,
             iconStacks = iconStacks
         )
-        iconStacks.addAll(dto.iconStack.map { iconStack ->
+        iconStacks.addAll(dto.iconStacks.map { iconStack ->
             val iconLayer = mutableListOf<IconLayer>()
             val iconStackResult = IconStack(
                 id = iconStack.id,
@@ -53,7 +55,7 @@ class IconMapper(
                 iconLayers = iconLayer,
                 icon = icon,
             )
-            iconLayer.addAll(iconStack.iconLayer.map { iconLayer1 ->
+            iconLayer.addAll(iconStack.iconLayers.map { iconLayer1 ->
                 IconLayer(
                     id = iconLayer1.id,
                     vectorGraphic = iconLayer1.vectorGraphic?.let { vectorGraphicMapper.fromDTO(it) },
@@ -71,6 +73,7 @@ class IconMapper(
         val icon = Icon(
             id = UUID.randomUUID(),
             name = "tmp",
+            dimensions = iconStack.icon.dimensions,
             iconStacks = iconStacks
         )
         iconStacks.add(

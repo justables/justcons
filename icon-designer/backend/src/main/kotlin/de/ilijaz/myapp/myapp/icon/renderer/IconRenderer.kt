@@ -26,12 +26,10 @@ class IconRenderer(
     }
 
     private fun renderStacks(): IconGroupsAndDefs {
-//        val iconStack: List<IconGroupsAndDefs> = icon.iconStacks.map { IconStackRenderer(it, icon.dimensions).render() }
-//        return IconGroupsAndDefs(
-//            iconStack.flatMap { it.defs },
-//            iconStack.flatMap { it.groups },
-//        )
-        val iconStack: IconGroupsAndDefs = IconStackRenderer(icon.iconStacks[0], icon.dimensions).render()
-        return iconStack
+        val iconStack: List<IconGroupsAndDefs> = icon.iconStacks.map { IconStackRenderer(it, icon.dimensions).render() }
+        return IconGroupsAndDefs(
+            iconStack.flatMap { it.defs },
+            iconStack.flatMap { it.groups },
+        )
     }
 }

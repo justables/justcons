@@ -5,7 +5,6 @@ import de.ilijaz.myapp.myapp.icon.repository.IconLayerRepository
 import de.ilijaz.myapp.myapp.icon.repository.IconRepository
 import de.ilijaz.myapp.myapp.icon.repository.IconStackRepository
 import org.springframework.stereotype.Service
-import javax.persistence.EntityManager
 
 @Service
 class IconService(
@@ -13,7 +12,6 @@ class IconService(
     private val iconStackRepository: IconStackRepository,
     private val iconLayerRepository: IconLayerRepository,
     private val iconMapper: IconMapper,
-    private val entityManager: EntityManager,
 ) {
     fun findAll(): Iterable<IconDTO> = iconMapper.toDTO(iconRepository.findAll())
 

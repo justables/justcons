@@ -5,6 +5,7 @@ import java.util.*
 class IconDTO(
     val id: UUID?,
     val name: String,
-    val iconStack: List<IconStackDTO>,
+    val dimensions: Int,
+    val iconStacks: List<IconStackDTO>,
     val image: ByteArray? = null,
 )

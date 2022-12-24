@@ -6,11 +6,19 @@ import { VectorGraphicDTO } from 'src/app/vectorgraphic/vector-graphic-dto';
 import { VectorGraphicsLoadAction } from 'src/app/vectorgraphic/vector-graphic.actions';
 import { VectorGraphicsState } from 'src/app/vectorgraphic/vector-graphic.state';
 import { IconDTO } from '../dto/icon-dto';
-import { IconLayer } from '../dto/icon-layer-dto';
+import { IconLayerDTO } from '../dto/icon-layer-dto';
 import { IconStack, IconStackDTO } from '../dto/icon-stack-dto';
 import { IconStackPosition } from '../icon-stack-position';
-import { IconService } from '../icon.service';
-import { IconUpdateRenderAction, IconUpdateSaveAction, IconUpdateSetAction } from './icon-update.actions';
+import {
+  IconUpdateAddIconLayerAction,
+  IconUpdateRemoveIconLayerAction,
+  IconUpdateRenderAction,
+  IconUpdateSaveAction,
+  IconUpdateSelectIconLayerAction,
+  IconUpdateSelectIconStackAction,
+  IconUpdateSelectVectorGrahpicAction,
+  IconUpdateSetIconAction,
+} from './icon-update.actions';
 import { IconUpdateState } from './icon-update.state';
 
 @Component({
@@ -25,64 +33,81 @@ export class IconUpdateComponent {
   @Select(IconUpdateState.icon)
   icon$!: Observable<IconDTO | undefined>;
 
+  @Select(IconUpdateState.selectedStack)
+  selectedStack$!: Observable<IconStackDTO | undefined>;
+
+  @Select(IconUpdateState.iconLayers)
+  iconLayers$!: Observable<IconLayerDTO[] | undefined>;
+
+  @Select(IconUpdateState.selectedLayer)
+  selectedLayer$!: Observable<IconLayerDTO | undefined>;
+
+  @Select(IconUpdateState.showVectorGraphics)
+  showVectorGraphics$!: Observable<boolean>;
+
+  @Select(IconUpdateState.iconStack('Center'))
+  centerStack$!: Observable<IconStackDTO | undefined>;
+  @Select(IconUpdateState.iconStack('TopRight'))
+  topRightStack$!: Observable<IconStackDTO | undefined>;
+  @Select(IconUpdateState.iconStack('BottomRight'))
+  bottomRightStack$!: Observable<IconStackDTO | undefined>;
+  @Select(IconUpdateState.iconStack('BottomLeft'))
+  bottomLeftStack$!: Observable<IconStackDTO | undefined>;
+  @Select(IconUpdateState.iconStack('TopLeft'))
+  topLeftStack$!: Observable<IconStackDTO | undefined>;
+
   @Input()
   iconDTO?: IconDTO = {
     id: undefined,
     name: 'unnamed icon',
-    iconStack: [],
+    dimensions: 24,
+    iconStacks: [
+      { id: undefined, position: 'Center', iconLayers: [], image: undefined },
+      { id: undefined, position: 'TopRight', iconLayers: [], image: undefined },
+      { id: undefined, position: 'BottomRight', iconLayers: [], image: undefined },
+      { id: undefined, position: 'BottomLeft', iconLayers: [], image: undefined },
+      { id: undefined, position: 'TopLeft', iconLayers: [], image: undefined },
+    ],
     image: undefined,
   };
-
-  _selectedIconStack: IconStackPosition = 'Center';
-  get selectedIconStack() {
-    return this._selectedIconStack;
-  }
-  set selectedIconStack(value: IconStackPosition) {
-    this._selectedIconStack = value;
-    this.currentIconLayer = this.iconDTO?.iconStack.find(
-      (stack) => stack.position === this.selectedIconStack
-    )?.iconLayer[0];
-  }
-
-  get currentStack() {
-    return this.getStackByPosition(this.selectedIconStack);
-  }
-
-  currentIconLayer: IconLayer | undefined;
 
   constructor(private store: Store, private router: Router) {}
 
   ngOnInit() {
-    this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
+    this.store.dispatch(new IconUpdateSetIconAction(this.iconDTO));
     this.store.dispatch(new VectorGraphicsLoadAction());
   }
 
   getStackByPosition(position: IconStackPosition): IconStackDTO {
-    const iconStack = this.iconDTO?.iconStack.find((stack) => stack.position === position);
+    const iconStack = this.iconDTO?.iconStacks.find((stack) => stack.position === position);
     if (iconStack !== undefined) {
       return iconStack;
     }
-    const newIconStack: IconStack = { id: undefined, position: position, iconLayer: [], image: undefined };
-    this.iconDTO?.iconStack.push(newIconStack);
+    const newIconStack: IconStack = { id: undefined, position: position, iconLayers: [], image: undefined };
+    this.iconDTO?.iconStacks.push(newIconStack);
     return newIconStack;
   }
 
+  onSelectStack(stackPosition: IconStackPosition) {
+    this.store.dispatch(new IconUpdateSelectIconStackAction(stackPosition));
+  }
+
+  onSelectLayer(layer: IconLayerDTO) {
+    this.store.dispatch(new IconUpdateSelectIconLayerAction(layer.sortPosition));
+  }
+
   onAddLayer() {
-    this.currentStack.iconLayer.push({
-      id: undefined,
-      sortPosition: this.currentStack.iconLayer.length,
-      vectorGraphic: undefined,
-    });
+    this.store.dispatch(new IconUpdateAddIconLayerAction());
+  }
+
+  onRemoveLayer(layer: IconLayerDTO) {
+    this.store.dispatch(new IconUpdateRemoveIconLayerAction(layer));
+    this.store.dispatch(new IconUpdateRenderAction());
   }
 
   onSelectVectorGraphic(vectorGraphic: VectorGraphicDTO) {
-    if (this.currentIconLayer) {
-      this.currentIconLayer.vectorGraphic = vectorGraphic;
-    }
-    // this.iconService.renderStack(this.currentStack).subscribe((response) => {
-    //   this.currentStack.image = response;
-    // });
-    this.rerenderIcon();
+    this.store.dispatch(new IconUpdateSelectVectorGrahpicAction(vectorGraphic));
+    this.store.dispatch(new IconUpdateRenderAction());
   }
 
   onSave() {
@@ -99,15 +124,5 @@ export class IconUpdateComponent {
 
   private navigateBack() {
     this.router.navigate(['/icons']);
-  }
-
-  private rerenderIcon() {
-    this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
-    this.store.dispatch(
-      new IconUpdateRenderAction(() => {
-        this.iconDTO = this.store.selectSnapshot(IconUpdateState.icon);
-        this.store.dispatch(new IconUpdateSetAction(this.iconDTO));
-      })
-    );
   }
 }

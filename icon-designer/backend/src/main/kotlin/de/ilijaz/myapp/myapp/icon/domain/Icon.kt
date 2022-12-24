@@ -8,6 +8,6 @@ import javax.persistence.*
 data class Icon(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: UUID?,
     val name: String,
-    val dimensions: Int = 24,
+    val dimensions: Int,
     @OneToMany(mappedBy = "icon", cascade = [CascadeType.ALL]) val iconStacks: List<IconStack>,
 )
