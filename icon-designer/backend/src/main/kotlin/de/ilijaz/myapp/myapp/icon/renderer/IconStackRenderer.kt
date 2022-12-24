@@ -10,10 +10,11 @@ class IconStackRenderer(
         if (iconStack.iconLayers.isEmpty()) {
             return IconGroupsAndDefs(emptyList(), emptyList())
         }
+        val sortedIconLayers = iconStack.iconLayers.sortedBy { it.sortPosition }
         return IconLayerRenderer(
-            iconStack.iconLayers.first(),
+            sortedIconLayers.first(),
             dimensions,
-            iconStack.iconLayers.toMutableList().let { it.remove(it.first()); it },
+            sortedIconLayers.toMutableList().let { it.remove(it.first()); it },
         ).render()
     }
 }

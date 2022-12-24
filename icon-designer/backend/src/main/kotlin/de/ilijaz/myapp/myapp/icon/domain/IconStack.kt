@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "icon_stacks")
 class IconStack(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: UUID?,
-    @OneToMany(mappedBy = "iconStack") val iconLayers: List<IconLayer>,
+    @OneToMany(mappedBy = "iconStack", cascade = [CascadeType.ALL]) val iconLayers: List<IconLayer>,
     val position: IconStackPosition,
     @ManyToOne @JoinColumn(name = "icon") val icon: Icon,
 )

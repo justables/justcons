@@ -66,9 +66,21 @@ class IconMapper(
         return icon
     }
 
-    private fun getIconFromIconStack(iconStack: IconStack) = Icon(
-        id = UUID.randomUUID(),
-        name = "tmp",
-        iconStacks = listOf(iconStack)
-    )
+    private fun getIconFromIconStack(iconStack: IconStack): Icon {
+        val iconStacks = mutableListOf<IconStack>()
+        val icon = Icon(
+            id = UUID.randomUUID(),
+            name = "tmp",
+            iconStacks = iconStacks
+        )
+        iconStacks.add(
+            IconStack(
+                id = UUID.randomUUID(),
+                position = IconStackPosition.Center,
+                iconLayers = iconStack.iconLayers,
+                icon = icon,
+            )
+        )
+        return icon
+    }
 }

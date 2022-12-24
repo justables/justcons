@@ -5,7 +5,42 @@
         <app-base64-image [img]="icon.image ?? ''"></app-base64-image>
       </div>
       <span>{{ icon.name }}</span>
-      <div class="vector-preview-overlay"></div>
+      <div class="vector-preview-overlay">
+        <!-- #region delete -->
+        <label
+          [for]="'icon-list-delete-modal-' + icon.id"
+          class="btn btn-warning"
+          >Delete</label
+        >
+
+        <input
+          type="checkbox"
+          [id]="'icon-list-delete-modal-' + icon.id"
+          class="modal-toggle"
+        />
+        <label
+          [for]="'icon-list-delete-modal-' + icon.id"
+          class="modal cursor-pointer"
+        >
+          <label class="modal-box relative" for="">
+            <h3 class="text-lg font-bold">Delete confirmation</h3>
+            <p class="py-4">
+              Are you sure that you want to delete the icon '{{ icon.name }}'?
+            </p>
+            <div class="modal-action">
+              <label
+                [for]="'icon-list-delete-modal-' + icon.id"
+                class="btn btn-primary"
+                >No</label
+              >
+              <button class="btn btn-ghost" (click)="onDelete(icon)">
+                Yes
+              </button>
+            </div>
+          </label>
+        </label>
+        <!-- #endregion -->
+      </div>
     </div>
   </ng-container>
 </div>

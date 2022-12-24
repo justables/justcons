@@ -3,7 +3,8 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { patch } from '@ngxs/store/operators';
 import { handleError } from 'src/core/handle-error';
 import { defaultRemoteAsset } from 'src/core/remote-asset';
-import { IconLoadAction, IconLoadedAction } from './icon.actions';
+import { IconDTO } from './dto/icon-dto';
+import { IconDeleteAction, IconDeletedAction, IconLoadAction, IconLoadedAction } from './icon.actions';
 import { IconEntity } from './icon.entity';
 import { IconService } from './icon.service';
 
@@ -38,5 +39,30 @@ export class IconState {
   @Action(IconLoadedAction)
   loaded(context: StateContext<IconEntity>, { response }: IconLoadedAction) {
     context.setState(patch<IconEntity>({ loadingState: 'loaded', response }));
+  }
+  @Action(IconDeleteAction)
+  delete(context: StateContext<IconEntity>, { request, onDeleted }: IconDeleteAction) {
+    context.setState(patch<IconEntity>({ loadingState: 'loading' }));
+    this.iconService.delete(request).subscribe({
+      next: (response) => {
+        context.dispatch(new IconDeletedAction(response));
+        if (onDeleted) {
+          onDeleted();
+        }
+      },
+      error: (error) => handleError({ context, error }),
+    });
+  }
+  @Action(IconDeletedAction)
+  deleted(context: StateContext<IconEntity>, { response }: IconDeletedAction) {
+    const state = context.getState();
+    context.setState(
+      patch<IconEntity>({
+        loadingState: 'loaded',
+        response: state.response?.filter(
+          (vectorGrahic) => response.filter((res) => res.id === vectorGrahic.id).length === 0
+        ),
+      })
+    );
   }
 }

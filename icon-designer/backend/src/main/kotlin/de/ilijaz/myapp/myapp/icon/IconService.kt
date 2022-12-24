@@ -32,14 +32,15 @@ class IconService(
         return iconMapper.toDTO(icon)
     }
 
-    fun delete(iconDTO: IconDTO) {
+    fun delete(iconDTO: IconDTO): IconDTO {
         if (iconDTO.id == null) {
             throw IllegalArgumentException("IconDTO has no id")
         }
         iconRepository.deleteById(iconDTO.id)
+        return iconDTO
     }
 
-    fun delete(iconDTOs: List<IconDTO>) = iconDTOs.forEach { delete(it) }
+    fun delete(iconDTOs: List<IconDTO>) = iconDTOs.map { delete(it) }
 
     fun render(icon: IconDTO): IconDTO = iconMapper.toDTO(iconMapper.fromDTO(icon))
 }

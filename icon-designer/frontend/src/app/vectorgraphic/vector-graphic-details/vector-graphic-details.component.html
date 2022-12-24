@@ -13,10 +13,16 @@
 
 <div class="flex justify-end gap-2">
   <button class="btn btn-ghost" (click)="onEdit()">Edit</button>
-  <label for="my-modal-4" class="btn btn-warning">Delete</label>
+  <label for="vector-graphic-details-delete-modal" class="btn btn-warning"
+    >Delete</label
+  >
 
-  <input type="checkbox" id="my-modal-4" class="modal-toggle" />
-  <label for="my-modal-4" class="modal cursor-pointer">
+  <input
+    type="checkbox"
+    id="vector-graphic-details-delete-modal"
+    class="modal-toggle"
+  />
+  <label for="vector-graphic-details-delete-modal" class="modal cursor-pointer">
     <label class="modal-box relative" for="">
       <h3 class="text-lg font-bold">Delete confirmation</h3>
       <p class="py-4">
@@ -24,8 +30,13 @@
           vectorGraphic.name
         }}'?
       </p>
-      <div class="flex gap-2 justify-end">
-        <button class="btn btn-primary">No</button>
+      <div class="modal-action">
+        <label
+          for="vector-graphic-details-delete-modal"
+          class="btn btn-primary"
+        >
+          No
+        </label>
         <button class="btn btn-ghost" (click)="onDelete()">Yes</button>
       </div>
     </label>

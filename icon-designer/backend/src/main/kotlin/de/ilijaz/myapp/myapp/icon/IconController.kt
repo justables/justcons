@@ -19,7 +19,7 @@ class IconController(
     fun save(@RequestBody icon: IconDTO): IconDTO = iconService.save(icon)
 
     @PostMapping("/icon/delete")
-    fun delete(@RequestBody icon: IconDTO) = iconService.delete(icon)
+    fun delete(@RequestBody icon: List<IconDTO>) = iconService.delete(icon)
 
 
 }

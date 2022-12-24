@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IconDTO } from '../dto/icon-dto';
-import { IconLoadAction } from '../icon.actions';
+import { IconDeleteAction, IconLoadAction } from '../icon.actions';
 import { IconState } from '../icon.state';
 
 @Component({
@@ -18,5 +18,13 @@ export class IconListComponent {
 
   ngOnInit(): void {
     this.store.dispatch(new IconLoadAction());
+  }
+
+  onDelete(icon: IconDTO) {
+    this.store.dispatch(
+      new IconDeleteAction([icon], () => {
+        this.store.dispatch(new IconLoadAction());
+      })
+    );
   }
 }

@@ -9,5 +9,5 @@ data class Icon(
     @Id @GeneratedValue(strategy = GenerationType.AUTO) var id: UUID?,
     val name: String,
     val dimensions: Int = 24,
-    @OneToMany(mappedBy = "icon") val iconStacks: List<IconStack>,
+    @OneToMany(mappedBy = "icon", cascade = [CascadeType.ALL]) val iconStacks: List<IconStack>,
 )
