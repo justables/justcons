@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SvgToPathConverterService } from 'src/app/svg/svg-to-path-converter.service';
+import { SvgToPathConverterRequestDTO } from 'src/app/svg/svg-to-path-converter-request-dto';
 
 @Component({
   selector: 'app-vectorgraphic-update',
@@ -50,7 +51,12 @@ export class VectorGraphicUpdateComponent {
       reader.readAsText(file, 'UTF-8');
       reader.onload = (evt: any) => {
         const svg = evt.target.result;
-        this.svgToPathConverterService.svgToPath(svg).subscribe((response) => {
+        const request: SvgToPathConverterRequestDTO = {
+          svg,
+          primaryColor: 'ffffff',
+          secondaryColor: 'fafafa',
+        };
+        this.svgToPathConverterService.svgToPath(request).subscribe((response) => {
           this.vectorGraphic.image = response.image;
           this.vectorGraphic.paths = response.paths;
           this.vectorGraphic.dimensions = response.dimensions;
